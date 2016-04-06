@@ -1,0 +1,36 @@
+{
+  "name": "apollo-backend",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/DimitarRuskov/Apollo-backend.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/DimitarRuskov/Apollo-backend/issues"
+  },
+  "homepage": "https://github.com/DimitarRuskov/Apollo-backend#readme",
+  "dependencies": {
+    "bcrypt-nodejs": "0.0.3",
+    "koa": "^1.2.0",
+    "koa-bodyparser": "^2.0.1",
+    "koa-compress": "^1.0.9",
+    "koa-error": "^1.1.3",
+    "koa-generic-session": "^1.10.2",
+    "koa-generic-session-mongo": "^0.2.5",
+    "koa-joi-router": "^3.0.0",
+    "koa-logger": "^1.3.0",
+    "koa-passport": "^1.3.0",
+    "lazy": "^1.0.11",
+    "lazy.js": "^0.4.2",
+    "lazyjs": "0.0.1",
+    "mongoose": "^4.4.10",
+    "passport-local": "^1.0.0"
+  }
+}
