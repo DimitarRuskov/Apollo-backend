@@ -3,11 +3,11 @@ var Joi = require('koa-joi-router').Joi;
 module.exports = function(services) {
     var route = {};
 
-    route.path = 'login';
+    route.path = 'list';
     route.method = 'post';
-
-    route.handler = function * login(next) {
-        yield services['user'].signIn(this.body);
+    route.auth = true;
+    route.handler = function * list(next) {
+        this.body = 'hero';
     };
 
     route.validate = {

@@ -1,9 +1,9 @@
 'use strict';
 
-var bcrypt = require("../../lib/bcrypt-thunk");
-var mongoose = require("mongoose");
+var bcrypt = require('../../lib/bcrypt-thunk');
+var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
-var co = require("co");
+var co = require('co');
 
 var UserSchema = new Schema({
         username: { type: String, required: true, unique: true, lowercase: true },
@@ -18,12 +18,12 @@ var UserSchema = new Schema({
     },
 });
 
-UserSchema.pre("save", function(done) {
-    if (!this.isModified("password")) {
+UserSchema.pre('save', function(done) {
+    if (!this.isModified('password')) {
         return done();
     }
 
-    co.wrap(function*() {
+    co.wrap(function *() {
         try {
             var salt = yield bcrypt.genSalt();
             var hash = yield bcrypt.hash(this.password, salt);
@@ -42,14 +42,14 @@ UserSchema.methods.comparePassword = function *(candidatePassword) {
 UserSchema.statics.passwordMatches = function *(username, password) {
     var user = yield this.findOne({ username: username.toLowerCase() }).exec();
     if (!user) {
-        throw new Error("User not found");
+        throw new Error('User not found');
     }
 
     if (yield user.comparePassword(password)) {
         return user;
     }
 
-    throw new Error("Password does not match");
+    throw new Error('Password does not match');
 };
 
 mongoose.model('User', UserSchema);
