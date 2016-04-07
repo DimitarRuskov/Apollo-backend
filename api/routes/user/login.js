@@ -7,11 +7,15 @@ module.exports = function(services) {
     route.method = 'post';
 
     route.handler = function * login(next) {
-        yield services['user'].signIn(this.body);
+        yield services['user'].signIn(this);
     };
 
     route.validate = {
         body: {
+            credentials: {
+                username: Joi.string().required(),
+                password: Joi.string().required()
+            }
         },
         type: 'application/json'
     };

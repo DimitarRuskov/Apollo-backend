@@ -9,13 +9,13 @@ var UserSchema = new Schema({
         username: { type: String, required: true, unique: true, lowercase: true },
         password: { type: String, required: true },
         registrationDate: {type: Date, required: true},
-        roles: {type: [String]},
+        roles: {type: [String]}
     }, {
     toJSON: {
         transform: function(doc, ret, options) {
-        delete ret.password;
-        },
-    },
+            delete ret.password;
+        }
+    }
 });
 
 UserSchema.pre('save', function(done) {
@@ -23,7 +23,7 @@ UserSchema.pre('save', function(done) {
         return done();
     }
 
-    co.wrap(function *() {
+    co.wrap(function * () {
         try {
             var salt = yield bcrypt.genSalt();
             var hash = yield bcrypt.hash(this.password, salt);
@@ -35,11 +35,11 @@ UserSchema.pre('save', function(done) {
     }).call(this).then(done);
 });
 
-UserSchema.methods.comparePassword = function *(candidatePassword) {
+UserSchema.methods.comparePassword = function * (candidatePassword) {
     return yield bcrypt.compare(candidatePassword, this.password);
 };
 
-UserSchema.statics.passwordMatches = function *(username, password) {
+UserSchema.statics.passwordMatches = function * (username, password) {
     var user = yield this.findOne({ username: username.toLowerCase() }).exec();
     if (!user) {
         throw new Error('User not found');
@@ -49,7 +49,7 @@ UserSchema.statics.passwordMatches = function *(username, password) {
         return user;
     }
 
-    throw new Error('Password does not match');
+    throw new Error('Wrong credentials');
 };
 
 mongoose.model('User', UserSchema);

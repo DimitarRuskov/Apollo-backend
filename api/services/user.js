@@ -1,9 +1,9 @@
 'use strict';
 var passport = require('koa-passport');
+var User = require('mongoose').model('User');
 
-exports.signIn = function *() {
-    var _this = this;
-    yield* passport.authenticate('local', function *(err, user, info) {
+exports.signIn = function * (_this) {
+    yield passport.authenticate('local', function * (err, user, info) {
         if (err) {
             throw err;
         }
@@ -13,44 +13,31 @@ exports.signIn = function *() {
             yield _this.login(user);
             _this.body = { user: user };
         }
-    }).call(this);
+    }).call(_this);
 };
 
-exports.getCurrentUser = function *() {
-    if (this.passport.user) {
-        this.body = { user: this.passport.user };
+exports.getCurrentUser = function * (_this) {
+    if (_this.passport.user) {
+        _this.body = { user: _this.passport.user };
     }
-    this.status = 200;
+    _this.status = 200;
 };
 
-exports.signOut = function *() {
-    this.logout();
-    this.session = null;
-    this.status = 204;
+exports.signOut = function * (_this) {
+    _this.logout();
+    _this.session = null;
+    _this.status = 204;
 };
 
-exports.createUser = function *() {
-    if (!this.request.body) {
-        this.throw('The body is empty', 400);
-    }
-
-    if (!this.request.body.username) {
-        this.throw('Missing username', 400);
-    }
-    if (!this.request.body.password) {
-        this.throw('Missing password', 400);
-    }
-
-    var User = require('mongoose').model('User');
-
+exports.createUser = function * (_this) {
     try {
-        var user = new User({ username: this.request.body.username, password: this.request.body.password });
+        var user = new User({ username: _this.request.body.username, password: _this.request.body.password, registrationDate: new Date() });
         user = yield user.save();
-        yield this.login(user);
+        yield _this.login(user);
     } catch (err) {
-        this.throw(err);
+        throw err;
     }
 
-    this.status = 200;
-    this.body = { user: this.passport.user };
+    _this.status = 200;
+    _this.body = { user: _this.passport.user };
 };

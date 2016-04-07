@@ -1,4 +1,4 @@
-"use strict";
+'use strict';
 var path = require('path');
 var Lazy = require('lazy.js');
 
@@ -29,7 +29,7 @@ var config = {
         app: {
             port: 3001,
             name: 'Apollo Production',
-            keys: ['']                    
+            keys: ['']
         },
         mongo: {
             url: apollo_production

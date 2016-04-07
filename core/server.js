@@ -18,7 +18,7 @@ module.exports = (function() {
 
         loadModels();
 
-        app = koa();
+        app = module.exports = koa();
 
         require('../config/passport')(passport, config);
 

@@ -9,12 +9,6 @@ module.exports = function(services) {
     route.handler = function * list(next) {
         this.body = 'hero';
     };
-
-    route.validate = {
-        body: {
-        },
-        type: 'application/json'
-    };
-
+    
     return route;
 };
