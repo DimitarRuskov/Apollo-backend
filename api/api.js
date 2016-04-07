@@ -14,7 +14,7 @@ module.exports = function(app, passport) {
         registerRoutes();
     };
 
-    function * authenthication(next) {
+    function * authentication(next) {
         if (this.isAuthenticated()) {
             yield next;
         } else {
@@ -44,7 +44,7 @@ module.exports = function(app, passport) {
             routeObj.path = routeObj.path.replace(/\\/g, '/');
 
             if (routeObj.auth) {
-                routeObj.handler = [authenthication].concat(routeObj.handler);
+                routeObj.handler = [authentication].concat(routeObj.handler);
             }
 
             route = routeObj;

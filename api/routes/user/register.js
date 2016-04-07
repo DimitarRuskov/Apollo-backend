@@ -3,18 +3,20 @@ var Joi = require('koa-joi-router').Joi;
 module.exports = function(services) {
     var route = {};
 
-    route.path = 'signup';
+    route.path = 'register';
     route.method = 'post';
 
-    route.handler = function * signUp(next) {
+    route.handler = function * register(next) {
         yield services['user'].createUser(this);
     };
 
     route.validate = {
         body: {
-            email: Joi.string().lowercase().email(),
-            username: Joi.string().required(),
-            password: Joi.string().required()
+            params: {
+                email: Joi.string().lowercase().email(),
+                username: Joi.string().required(),
+                password: Joi.string().required()    
+            }
         },
         type: 'application/json'
     };
