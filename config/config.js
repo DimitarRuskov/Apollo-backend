@@ -17,7 +17,7 @@ var base = {
 var config = {
     development: {
         app: {
-            port: 3000,
+            port: 8003,
             name: 'Apollo Development',
             keys: ['zvRxYI1rbWB1P1eAepjwiguTK3l3WJncfz8VeaLDOIrZPWhX']                    
         },
