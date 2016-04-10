@@ -5,9 +5,12 @@ const logger = require('koa-logger');
 const compress = require('koa-compress');
 // const errorHandler = require('koa-error');
 const bodyParser = require('koa-bodyparser');
+const cors = require('koa-cors');
 
 module.exports = function(app, config, passport) {
     app.keys = config.app.keys;
+
+    app.use(cors());
 
     if (config.app.env !== 'test') {
         app.use(logger());

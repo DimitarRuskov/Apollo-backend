@@ -7,7 +7,7 @@ module.exports = function(app, passport) {
     var routes = [];
     var services = {};
     var apiRouter = router();
-
+    
     api.initialize = function() {
         loadServices();
         loadRoutes();
