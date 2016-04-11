@@ -37,4 +37,4 @@ var config = {
     }
 };
 
-module.exports = Lazy(base).merge(config[env]).others[0];
+module.exports = Lazy(base).merge(config[env]).toObject();
