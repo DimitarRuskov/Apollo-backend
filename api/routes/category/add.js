@@ -14,7 +14,8 @@ module.exports = function(services) {
         body: Joi.object({
             params: Joi.object({
                 name: Joi.string().required(),
-                description: Joi.string().required()  
+                description: Joi.string().required(),
+                image: Joi.string().required()
             })
         }),
         type: 'application/json'

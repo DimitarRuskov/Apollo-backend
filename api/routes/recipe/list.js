@@ -6,8 +6,6 @@ module.exports = function(services) {
     route.path = 'list';
     route.method = 'post';
     route.handler = function * list(next) {
-        this.set('Access-Control-Allow-Origin', '*');
-        this.body = { };
     };
     
     return route;
