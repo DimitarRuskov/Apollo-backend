@@ -8,6 +8,7 @@ module.exports = function(services) {
 
     route.handler = function * login(next) {
         yield services['user'].signIn(this);
+        this.throwError(400, 'test');
     };
 
     route.validate = {

@@ -7,8 +7,8 @@ module.exports = function(services) {
     route.method = 'post';
 
     route.handler = function * register(next) {
-        if(!this.invalid) {
-            yield services['category'].createCategory(this);    
+        if (!this.invalid) {
+            yield services['category'].createCategory(this);
         } else {
             throw Error(this.invalid.body.msg);
         }

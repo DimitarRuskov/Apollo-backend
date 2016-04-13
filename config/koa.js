@@ -8,7 +8,7 @@ const bodyParser = require('koa-bodyparser');
 const cors = require('koa-cors');
 const path = require('path');
 
-module.exports = function(app, config, passport) {
+module.exports = function(app, config) {
     app.keys = config.app.keys;
     app.use(serve(path.join(config.app.root, 'public')));
     
@@ -16,14 +16,11 @@ module.exports = function(app, config, passport) {
 
     app.use(logger());
 
-
     app.use(session({
         store: new MongoStore({ url: config.mongo.url })
     }));
 
     app.use(bodyParser());
-    app.use(passport.initialize());
-    app.use(passport.session());
 
     app.use(compress());
 };
