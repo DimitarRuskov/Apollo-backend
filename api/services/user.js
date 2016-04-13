@@ -1,19 +1,19 @@
 'use strict';
 var User = require('mongoose').model('User');
 
-exports.signIn = function * (_this) {
-
+exports.login = function * (params) {
+    
 };
 
 exports.getCurrentUser = function * (_this) {
 
 };
 
-exports.signOut = function * (_this) {
+exports.logout = function * (_this) {
 
 };
 
-exports.createUser = function * (_this) {
+exports.register = function * (_this) {
     try {
         var user = new User({ username: _this.request.body.username, password: _this.request.body.password, registrationDate: new Date() });
         user = yield user.save();

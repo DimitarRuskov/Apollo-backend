@@ -49,19 +49,43 @@ module.exports = (function() {
 
     function throwError(code, message, description, errors) {
         var error = new Error();
-        error.content = {
+        
+        error.content = buildError(code, message, description, errors);
+        
+        throw error;
+    }
+
+    function buildError(code, message, description, errors) {
+        var error = {
             code: code,
             message: message
         };
 
         if (description) {
-            error.content.description = description;
+            error.description = description;
         }
 
         if (errors) {
-            error.content.errors = errors;
+            error.errors = errors;
         }
-        throw error;
+        
+        return error;
+    }
+
+    function parseValidationError(error) {
+        var result = new Error();
+        var errors = [];
+        
+        (Array.isArray(error.details) ? error.details.forEach(function(err) {
+            errors.push({
+                field: err.context.key,
+                message: err.message
+            });
+        }) : undefined);
+                
+        result.content = buildError(error.statusCode, error.name, error.message, errors);
+                
+        return result;
     }
 
     function errorHandler() {
@@ -69,6 +93,10 @@ module.exports = (function() {
             try {
                 yield next;
             } catch (err) {
+                if (err.name === 'ValidationError') {
+                    err = parseValidationError(err);
+                }
+                
                 this.status = err.content.code;
                 this.body = err.content;
             }

@@ -7,7 +7,7 @@ module.exports = function(services) {
     route.method = 'post';
 
     route.handler = function * login(next) {
-        yield services['user'].signIn(this);
+        yield services['user'].login(this);
         this.throwError(400, 'test');
     };
 
