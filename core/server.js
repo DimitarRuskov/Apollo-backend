@@ -7,7 +7,7 @@ var config = require('../config/config');
 
 module.exports = (function() {
     var server = {};
-    var app = undefined;
+    var app;
 
     server.start = function() {
         mongoose.connect(config.mongo.url);
@@ -18,14 +18,14 @@ module.exports = (function() {
         loadModels();
 
         app = module.exports = koa();
-        
+
         app.use(function * (next) {
             this.throwError = this.throwError || throwError;
             yield next;
         });
-        
+
         app.use(errorHandler());
-        
+
         require('../config/koa')(app, config);
 
         require('../api/api')(app);
@@ -53,11 +53,11 @@ module.exports = (function() {
             code: code,
             message: message
         };
-        
+
         if (description) {
             error.content.description = description;
         }
-        
+
         if (errors) {
             error.content.errors = errors;
         }

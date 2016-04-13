@@ -2,25 +2,26 @@ var fs = require('fs');
 var path = require('path');
 var router = require('koa-joi-router');
 
-module.exports = function(app, passport) {
+module.exports = function(app) {
     var api = {};
     var routes = [];
     var services = {};
     var apiRouter = router();
-    
+    var statelessauthOptions = {ignorePaths: []};
+
     api.initialize = function() {
         loadServices();
         loadRoutes();
         registerRoutes();
     };
 
-    function * authentication(next) {
-        if (this.isAuthenticated()) {
-            yield next;
-        } else {
-            this.status = 401;
-        }
-    }
+    // function * authentication(next) {
+    //     if (this.isAuthenticated()) {
+    //         yield next;
+    //     } else {
+    //         this.status = 401;
+    //     }
+    // }
 
     function registerRoutes() {
         routes.forEach(function(route) {
@@ -43,8 +44,8 @@ module.exports = function(app, passport) {
 
             routeObj.path = routeObj.path.replace(/\\/g, '/');
 
-            if (routeObj.auth) {
-                routeObj.handler = [authentication].concat(routeObj.handler);
+            if (!routeObj.auth) {
+                statelessauthOptions.ignorePaths.push(routeObj.path);
             }
 
             route = routeObj;
