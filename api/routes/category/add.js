@@ -7,7 +7,11 @@ module.exports = function(services) {
     route.method = 'post';
 
     route.handler = function * register(next) {
-        yield services['category'].createCategory(this);
+        if(!this.invalid) {
+            yield services['category'].createCategory(this);    
+        } else {
+            throw Error(this.invalid.body.msg);
+        }
     };
 
     route.validate = {
@@ -16,8 +20,9 @@ module.exports = function(services) {
                 name: Joi.string().required(),
                 description: Joi.string().required(),
                 image: Joi.string().required()
-            })
+            }).required()
         }),
+        continueOnError: true,
         type: 'application/json'
     };
 

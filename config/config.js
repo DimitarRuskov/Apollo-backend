@@ -19,7 +19,8 @@ var config = {
         app: {
             port: 8003,
             name: 'Apollo Development',
-            keys: ['zvRxYI1rbWB1P1eAepjwiguTK3l3WJncfz8VeaLDOIrZPWhX']                    
+            keys: ['zvRxYI1rbWB1P1eAepjwiguTK3l3WJncfz8VeaLDOIrZPWhX'],
+            publicDir: path.join(base.app.root, '/public')
         },
         mongo: {
             url: apollo_development

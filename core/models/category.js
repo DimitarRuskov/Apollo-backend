@@ -6,6 +6,7 @@ var Schema = mongoose.Schema;
 var CategorySchema = new Schema({
     name: {type: String, required: true, unique: true},
     description: {type: String, required: true},
+    imageUrl: {type: String, required: false},
     createdAt: {type: Date, required: true},
     updatedAt: {type: Date, required: false}
 });

@@ -14,9 +14,8 @@ module.exports = function(app, config, passport) {
     
     app.use(cors());
 
-    if (config.app.env !== 'development') {
-        app.use(logger());
-    }
+    app.use(logger());
+
 
     app.use(session({
         store: new MongoStore({ url: config.mongo.url })
