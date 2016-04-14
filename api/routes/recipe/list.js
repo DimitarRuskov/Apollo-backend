@@ -5,8 +5,7 @@ module.exports = function(services) {
 
     route.path = 'list';
     route.method = 'post';
-    route.handler = function * list(next) {
-    };
+    route.handler = function * list(next) {};
     
     return route;
 };

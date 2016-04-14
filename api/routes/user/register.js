@@ -7,7 +7,14 @@ module.exports = function(services) {
     route.method = 'post';
 
     route.handler = function * register(next) {
-        yield services['user'].createUser(this);
+        var user = yield services['user'].register(this.request.body.params);
+        
+        var token = yield services['token'].create(user);
+        
+        this.status = 200;
+        this.body = {
+            token: token
+        };
     };
 
     route.validate = {
@@ -15,7 +22,7 @@ module.exports = function(services) {
             params: {
                 email: Joi.string().lowercase().email(),
                 username: Joi.string().required(),
-                password: Joi.string().required()    
+                password: Joi.string().required()
             }
         },
         type: 'application/json'

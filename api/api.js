@@ -1,7 +1,6 @@
 var fs = require('fs');
 var path = require('path');
 var router = require('koa-joi-router');
-var auth = require('./auth');
 
 module.exports = function(app) {
     var api = {};
@@ -10,17 +9,16 @@ module.exports = function(app) {
     var apiRouter = router();
 
     api.initialize = function() {
-        //auth(app);
         loadServices();
         loadRoutes();
         registerRoutes();
     };
 
     function * authentication(next) {
-        if (this.isAuthenticated) {
+        if (this.state.user) {
             yield next;
         } else {
-            this.throwError(401, 'Unauthorized');
+            this.throw(401, 'Unauthorized');
         }
     }
     

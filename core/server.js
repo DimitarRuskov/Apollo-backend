@@ -4,27 +4,15 @@ var koa = require('koa');
 var mongoose = require('mongoose');
 
 var config = require('../config/config');
+var errorHandlers = require('./errorHandlers/index')();
+var buildError = require('./errorHandlers/buildError');
 
 module.exports = (function() {
     var server = {};
     var app;
 
     server.start = function() {
-        mongoose.connect(config.mongo.url);
-        mongoose.connection.on('error', function(err) {
-            console.log(err);
-        });
-
-        loadModels();
-
-        app = module.exports = koa();
-
-        app.use(function * (next) {
-            this.throwError = this.throwError || throwError;
-            yield next;
-        });
-
-        app.use(errorHandler());
+        initialize();
 
         require('../config/koa')(app, config);
 
@@ -34,6 +22,27 @@ module.exports = (function() {
         console.log('Server started, listening on port: ' + config.app.port);
     };
 
+    function initialize() {
+        mongoose.connect(config.mongo.url);
+        mongoose.connection.on('error', function(err) {
+            console.log(err);
+        });
+        
+        loadModels();
+
+        app = module.exports = koa();
+        
+        app.use(function * (next) {
+            if (this.request.accept.headers['content-type'] !== 'application/json') {
+                this.throw(400, 'Unsupported content type!');
+            } else {
+                yield next;
+            }
+        });
+        
+        app.use(errorHandler());
+    }
+    
     function loadModels() {
         try {
             var modelsPath = path.join(__dirname, 'models');
@@ -46,59 +55,22 @@ module.exports = (function() {
             throw error;
         }
     }
-
-    function throwError(code, message, description, errors) {
-        var error = new Error();
-        
-        error.content = buildError(code, message, description, errors);
-        
-        throw error;
-    }
-
-    function buildError(code, message, description, errors) {
-        var error = {
-            code: code,
-            message: message
-        };
-
-        if (description) {
-            error.description = description;
-        }
-
-        if (errors) {
-            error.errors = errors;
-        }
-        
-        return error;
-    }
-
-    function parseValidationError(error) {
-        var result = new Error();
-        var errors = [];
-        
-        (Array.isArray(error.details) ? error.details.forEach(function(err) {
-            errors.push({
-                field: err.context.key,
-                message: err.message
-            });
-        }) : undefined);
-                
-        result.content = buildError(error.statusCode, error.name, error.message, errors);
-                
-        return result;
-    }
-
+    
     function errorHandler() {
         return function * (next) {
             try {
                 yield next;
             } catch (err) {
-                if (err.name === 'ValidationError') {
-                    err = parseValidationError(err);
+                var errorResult = err;
+                
+                if (errorHandlers[errorResult.name]) {
+                    errorResult = errorHandlers[errorResult.name](errorResult);
+                } else {
+                    errorResult.content = buildError(err.status || 500, errorResult.name || 'Internal Server Error', errorResult.message || '');
                 }
                 
-                this.status = err.content.code;
-                this.body = err.content;
+                this.status = errorResult.content.code;
+                this.body = errorResult.content;
             }
         };
     }

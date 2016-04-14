@@ -9,14 +9,6 @@ module.exports = function(services) {
     route.handler = function * list(next) {
         this.body = this.request.body;
     };
-    route.validate = {
-        body: Joi.object({
-            params: Joi.object({
-                title: Joi.string().required(),
-                description: Joi.string().required()
-            }).required()
-        }).required(),
-        type: 'application/json'
-    };
+    
     return route;
 };

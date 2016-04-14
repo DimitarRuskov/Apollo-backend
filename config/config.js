@@ -20,7 +20,11 @@ var config = {
             port: 8003,
             name: 'Apollo Development',
             keys: ['zvRxYI1rbWB1P1eAepjwiguTK3l3WJncfz8VeaLDOIrZPWhX'],
-            publicDir: path.join(base.app.root, '/public')
+            publicDir: path.join(base.app.root, '/public'),
+            jwt: {
+                secret: 'W68A1aMlq5VkBN1No32gCxkoj5XBXcItQyFLncRroGXSPqTlRXFQBosGvGLcYWqG',
+                duration: 3600
+            }
         },
         mongo: {
             url: apollo_development

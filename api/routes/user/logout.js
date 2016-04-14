@@ -5,7 +5,7 @@ module.exports = function(services) {
     route.method = 'post';
 
     route.handler = function * logout(next) {
-        yield services['user'].signOut(this);
+        yield services['user'].logout(this);
     };
 
     return route;
