@@ -20,8 +20,7 @@ exports.createRecipe = function * (_this) {
         var recipe = new Recipe({
             title: params.title,
             description: params.description,
-            createdAt: creationDate,
-            updatedAt: creationDate
+            createdAt: creationDate
         });
         
         recipe = yield recipe.save();

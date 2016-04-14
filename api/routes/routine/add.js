@@ -7,12 +7,13 @@ module.exports = function(services) {
     route.method = 'post';
 
     route.handler = function * register(next) {
-        yield services['category'].createCategory(this);
+        yield services['routine'].createRoutine(this);
     };
 
     route.validate = {
         body: Joi.object({
             params: Joi.object({
+                categoryId: Joi.string().required(),
                 name: Joi.string().required(),
                 description: Joi.string().required(),
                 image: Joi.string().required()

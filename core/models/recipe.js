@@ -6,8 +6,7 @@ var Schema = mongoose.Schema;
 var RecipeSchema = new Schema({
     title: {type: String, required: true, unique: true},
     description: {type: String, required: true},
-    createdAt: {type: Date, required: true},
-    updatedAt: {type: Date, required: false}
+    createdAt: {type: Date, required: true}
 });
 
 mongoose.model('Recipe', RecipeSchema);

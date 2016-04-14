@@ -3,14 +3,14 @@ var fs = require('fs');
 var co = require('co');
 var path = require('path');
 var config = require('../../config/config');
-var Category = require('mongoose').model('Category');
+var Routine = require('mongoose').model('Routine');
 
 exports.listCategories = function * (_this) {
     try {
         var params = _this.request.body.params || {};
-        var categories = yield Category.find().sort(params.orderBy || {});
+        var routines = yield Routine.find().sort(params.orderBy || {});
         _this.status = 200;
-        _this.body = { categories: categories };
+        _this.body = { routines: routines };
     } catch (err) {
         throw err;
     }
@@ -22,18 +22,19 @@ exports.createCategory = function * (_this) {
         var creationDate = new Date();
         var imageUrl = null;
         
-        var category = new Category({
+        var routine = new Routine({
+            categoryId: params.categoryId,
             name: params.name,
             description: params.description,
             createdAt: creationDate
         });
         
-        category = yield category.save();
+        routine = yield routine.save();
         imageUrl = yield storeImage(params.image, category.id);
-        category = yield Category.findByIdAndUpdate(category.id, {imageUrl: imageUrl}, {new:true});
+        routine = yield Routine.findByIdAndUpdate(routine.id, {imageUrl: imageUrl}, {new:true});
         
         _this.status = 200;
-        _this.body = { category: category };
+        _this.body = { routine: routine };
     } catch (err) {
         throw err;
     }
