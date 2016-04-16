@@ -33,7 +33,7 @@ module.exports = (function() {
         app = module.exports = koa();
         
         app.use(function * (next) {
-            if (this.request.accept.headers['content-type'] !== 'application/json') {
+            if (this.request.req.method !== 'OPTIONS' && this.request.accept.headers['content-type'] !== 'application/json') {
                 this.throw(400, 'Unsupported content type!');
             } else {
                 yield next;

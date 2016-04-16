@@ -5,7 +5,7 @@ var path = require('path');
 var config = require('../../config/config');
 var Routine = require('mongoose').model('Routine');
 
-exports.listCategories = function * (_this) {
+exports.listRoutines = function * (_this) {
     try {
         var params = _this.request.body.params || {};
         var routines = yield Routine.find().sort(params.orderBy || {});
@@ -16,13 +16,14 @@ exports.listCategories = function * (_this) {
     }
 };
 
-exports.createCategory = function * (_this) {
+exports.createRoutine = function * (_this) {
     try {
         var params = _this.request.body.params;
         var creationDate = new Date();
         var imageUrl = null;
-        
-        var routine = new Routine({
+        var routine = null;
+       
+       routine = new Routine({
             categoryId: params.categoryId,
             name: params.name,
             description: params.description,
@@ -30,7 +31,7 @@ exports.createCategory = function * (_this) {
         });
         
         routine = yield routine.save();
-        imageUrl = yield storeImage(params.image, category.id);
+        imageUrl = yield storeImage(params.image, routine.id);
         routine = yield Routine.findByIdAndUpdate(routine.id, {imageUrl: imageUrl}, {new:true});
         
         _this.status = 200;
