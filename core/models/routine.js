@@ -3,6 +3,7 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var Category = require('mongoose').model('Category');
+var co = require('co');
 
 var RoutineSchema = new Schema({
     categoryId: {type: String, required: true},
@@ -12,10 +13,17 @@ var RoutineSchema = new Schema({
     createdAt: {type: Date, required: true}
 });
 
-RoutineSchema.pre('save', function (next) {
-    var _this = this;
-    // var category = yield Category.find({_id : _this.categoryId});
-    console.log(category);
+RoutineSchema.pre('save', function (done) {
+    
+    co.wrap(function * () {
+        try {
+            var category = yield Category.findById(this.categoryId);
+            if (!category || category === null) throw new Error('Invalid Category ID');
+            done();
+        } catch (err) {
+            done(err);
+        }
+    }).call(this).then(done);
 });
 
 mongoose.model('Routine', RoutineSchema);
