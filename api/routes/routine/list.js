@@ -6,7 +6,7 @@ module.exports = function(services) {
     route.path = 'list';
     route.method = 'get';
     route.handler = function * list(next) {
-        yield services['category'].listCategories(this.request.body.params);
+        yield services['routine'].listRoutines(this.request.body.params);
     };
     
     route.validate = {

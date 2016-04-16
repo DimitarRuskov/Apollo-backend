@@ -5,20 +5,17 @@ var path = require('path');
 var config = require('../../config/config');
 var Category = require('mongoose').model('Category');
 
-exports.listCategories = function * (_this) {
+exports.listCategories = function * (params) {
     try {
-        var params = _this.request.body.params || {};
         var categories = yield Category.find().sort(params.orderBy || {});
-        _this.status = 200;
-        _this.body = { categories: categories };
+        return categories;
     } catch (err) {
         throw err;
     }
 };
 
-exports.createCategory = function * (_this) {
+exports.createCategory = function * (params) {
     try {
-        var params = _this.request.body.params;
         var creationDate = new Date();
         var imageUrl = null;
         
@@ -31,10 +28,9 @@ exports.createCategory = function * (_this) {
         
         category = yield category.save();
         imageUrl = yield storeImage(params.image, category.id);
-        category = yield Category.findByIdAndUpdate(category.id, {imageUrl: imageUrl}, {new:true});
+        category = yield Category.findByIdAndUpdate(category.id, {imageUrl: imageUrl}, {new: true});
         
-        _this.status = 200;
-        _this.body = { category: category };
+        return category;        
     } catch (err) {
         throw err;
     }

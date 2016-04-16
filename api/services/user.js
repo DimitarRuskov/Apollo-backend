@@ -54,10 +54,14 @@ exports.register = function * (params) {
     }
 };
 
-exports.logout = function * (_this) {
+exports.edit = function * (params) {
     
 };
 
-exports.getCurrentUser = function * (_this) {
+exports.logout = function * (params) {
+    
+};
+
+exports.getCurrentUser = function * (params) {
     
 };

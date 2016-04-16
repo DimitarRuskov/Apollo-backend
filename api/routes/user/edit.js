@@ -3,20 +3,23 @@ var Joi = require('koa-joi-router').Joi;
 module.exports = function(services) {
     var route = {};
 
-    route.path = 'list';
-    route.method = 'get';
-    route.handler = function * list(next) {
-        yield services['category'].listCategories(this.request.body.params);
-    };
+    route.path = 'edit';
+    route.method = 'post';
+    route.auth = true;
     
+    route.handler = function * login(next) {
+        this.status = 200;
+        this.body = {
+        };
+    };
+
     route.validate = {
         body: Joi.object({
             params: Joi.object({
-                orderBy: Joi.object()
             }).required()
-        }),
+        }).required(),
         type: 'application/json'
     };
-    
+
     return route;
 };
