@@ -5,6 +5,7 @@ module.exports = function(services) {
 
     route.path = 'add';
     route.method = 'post';
+    route.auth = true;
 
     route.handler = function * register(next) {
         yield services['category'].createCategory(this);
