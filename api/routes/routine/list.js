@@ -5,18 +5,19 @@ module.exports = function(services) {
 
     route.path = 'list';
     route.method = 'get';
+    
     route.handler = function * list(next) {
         yield services['routine'].listRoutines(this.request.body.params);
     };
-    
+
     route.validate = {
         body: Joi.object({
             params: Joi.object({
-                orderBy: Joi.object()
+                categoryId: Joi.string().required()
             }).required()
         }),
         type: 'application/json'
     };
-    
+
     return route;
 };
