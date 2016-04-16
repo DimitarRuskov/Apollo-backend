@@ -7,9 +7,9 @@ var CategorySchema = new Schema({
     name: {type: String, required: true, unique: true},
     description: {type: String, required: true},
     createdAt: {type: Date, required: true},
-    createdBy: {type: Schema.Types.ObjectId, required: true, ref: "User"},
+    createdBy: {type: String, required: true},
     updatedAt: {type: Date},
-    routines: {type: [Schema.Types.ObjectId], ref: "Routine"},
+    routines: {type: [String]},
     imageUrl: {type: String}
 });
 

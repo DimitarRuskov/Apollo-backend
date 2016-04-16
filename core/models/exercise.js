@@ -11,7 +11,7 @@ var ExerciseSchema = new Schema({
 });
 
 var ExerciseDetailSchema = new Schema({
-    exerciseId: {type: Schema.Types.ObjectId, required: true, ref: "Exercise"},
+    exerciseId: {type: String, required: true},
     duration: {type: Number, required: true},
     repetitions: {type: Number, required: true},
     sets: {type: Number, required: true}
