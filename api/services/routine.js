@@ -8,7 +8,7 @@ var Routine = require('mongoose').model('Routine');
 exports.listRoutines = function * (_this) {
     try {
         var params = _this.request.body.params || {};
-        var routines = yield Routine.find().sort(params.orderBy || {});
+        var routines = yield Routine.find({categoryId: params.categoryId}).sort(params.orderBy || {});
         _this.status = 200;
         _this.body = { routines: routines };
     } catch (err) {
