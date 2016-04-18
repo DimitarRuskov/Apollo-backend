@@ -14,7 +14,7 @@ exports.listCategories = function * (params) {
     }
 };
 
-exports.createCategory = function * (params) {
+exports.createCategory = function * (params, user) {
     try {
         var creationDate = new Date();
         var imageUrl = null;
@@ -22,7 +22,8 @@ exports.createCategory = function * (params) {
         var category = new Category({
             name: params.name,
             description: params.description,
-            createdAt: creationDate
+            createdAt: creationDate,
+            createdBy: user.id
         });
         
         category = yield category.save();

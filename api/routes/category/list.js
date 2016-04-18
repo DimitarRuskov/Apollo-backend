@@ -4,16 +4,19 @@ module.exports = function(services) {
     var route = {};
 
     route.path = 'list';
-    route.method = 'get';
+    route.method = 'post';
     route.handler = function * list(next) {
-        yield services['category'].listCategories(this.request.body.params);
+        var categories = yield services['category'].listCategories(this.request.body);
+        
+        this.status = 200;
+        this.body = {
+            categories: categories
+        };
     };
     
     route.validate = {
         body: Joi.object({
-            params: Joi.object({
-                orderBy: Joi.object()
-            }).required()
+            orderBy: Joi.object()
         }),
         type: 'application/json'
     };
