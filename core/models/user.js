@@ -35,6 +35,14 @@ UserSchema.pre('save', function(done) {
     }).call(this).then(done);
 });
 
+UserSchema.virtual('withoutPassword').get(function () {
+    return {
+        id: this._id.toString(),
+        username: this.username,
+        roles: this.roles
+    };
+});
+
 UserSchema.methods.comparePassword = function * (candidatePassword) {
     return yield bcrypt.compare(candidatePassword, this.password);
 };

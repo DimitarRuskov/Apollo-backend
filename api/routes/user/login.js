@@ -21,8 +21,7 @@ module.exports = function(services) {
         body: Joi.object({
             username: Joi.string().required(),
             password: Joi.string().required()
-        }),
-        type: 'application/json'
+        })
     };
 
     return route;

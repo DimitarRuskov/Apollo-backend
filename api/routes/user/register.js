@@ -24,8 +24,7 @@ module.exports = function(services) {
                 username: Joi.string().required(),
                 password: Joi.string().required()
             }
-        },
-        type: 'application/json'
+        }
     };
 
     return route;

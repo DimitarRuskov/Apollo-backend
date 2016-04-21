@@ -17,8 +17,7 @@ module.exports = function(services) {
     route.validate = {
         body: Joi.object({
             orderBy: Joi.object()
-        }),
-        type: 'application/json'
+        })
     };
     
     return route;

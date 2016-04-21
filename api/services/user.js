@@ -21,13 +21,8 @@ exports.login = function * (params) {
             });
         })
     )) {
-        var userInfo = {
-            roles: user._doc.roles,
-            user: user._doc.username,
-            id: user._doc._id.id
-        };
-                
-        return userInfo;
+
+        return user.withoutPassword;
     } else {
         var error = new Error('Username and password do not match.');
         error.status = 401;
@@ -42,13 +37,7 @@ exports.register = function * (params) {
         var user = new User({ username: params.username, password: params.password, registrationDate: new Date() });
         user = yield user.save();
         
-        var userInfo = {
-            roles: user._doc.roles,
-            user: user._doc.username,
-            id: user._doc._id.id
-        };
-                
-        return userInfo;
+        return user.withoutPassword;
     } catch (err) {
         throw err;
     }

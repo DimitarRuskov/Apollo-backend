@@ -21,8 +21,7 @@ module.exports = function(services) {
             name: Joi.string().required(),
             description: Joi.string().required(),
             image: Joi.string().required()
-        }),
-        type: 'application/json'
+        })
     };
 
     return route;

@@ -17,8 +17,7 @@ module.exports = function(services) {
         body: Joi.object({
             params: Joi.object({
             }).required()
-        }).required(),
-        type: 'application/json'
+        }).required()
     };
 
     return route;
