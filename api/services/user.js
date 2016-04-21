@@ -24,7 +24,7 @@ exports.login = function * (params) {
         var userInfo = {
             roles: user._doc.roles,
             user: user._doc.username,
-            id: user._doc._id.id
+            id: user._doc._id.toString()
         };
                 
         return userInfo;
@@ -63,5 +63,18 @@ exports.logout = function * (params) {
 };
 
 exports.getCurrentUser = function * (params) {
+    
+};
+
+exports.getProfile = function * (id) {
+    var user = yield User.findById(id);
+    
+    if (!user) {
+        var error = new Error('Error fetching profile details.');
+        error.status = 413;
+        error.name = 'MongooseError';
+        
+        throw error;
+    }
     
 };

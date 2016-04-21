@@ -7,13 +7,17 @@ module.exports = function(services) {
     route.method = 'post';
 
     route.handler = function * login(next) {
-        var user = yield services['user'].login(this.request.body);
+        var userDetails = yield services['user'].login(this.request.body);
         
-        var token = yield services['token'].create(user);
+        var token = yield services['token'].create(userDetails);
         
         this.status = 200;
         this.body = {
-            token: token
+            token: token,
+            userDetails: {
+                id: userDetails.id,
+                username: userDetails.user
+            }
         };
     };
 
