@@ -76,5 +76,5 @@ exports.getProfile = function * (id) {
         
         throw error;
     }
-    
+    return user;
 };

@@ -1,9 +1,9 @@
 'use strict';
 var Routine = require('mongoose').model('Routine');
 
-exports.listRoutines = function * (params) {
+exports.listRoutines = function * (categoryId) {
     try {
-        var routines = yield Routine.find().sort(params.orderBy || {});
+        var routines = yield Routine.find({ 'categoryId': categoryId });
         return routines;
     } catch (err) {
         throw err;
@@ -14,7 +14,6 @@ exports.createRoutine = function * (params) {
     try {
         var creationDate = new Date();
         
-        var creationDate = new Date();
         var imageUrl = null;
         var routine = new Routine({
             categoryId: params.categoryId,

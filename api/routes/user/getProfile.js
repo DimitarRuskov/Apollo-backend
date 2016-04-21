@@ -12,6 +12,7 @@ module.exports = function(services) {
         var profile = yield services['user'].getProfile(id);
         this.status = 200;
         this.body = {
+            profile: profile
         };
     };
 
