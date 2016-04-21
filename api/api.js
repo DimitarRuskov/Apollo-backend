@@ -42,11 +42,15 @@ module.exports = function(app) {
             }
 
             routeObj.path = routeObj.path.replace(/\\/g, '/');
-
+            
             if (routeObj.auth) {
                 routeObj.handler = [authentication].concat(routeObj.handler);
             }
-
+            
+            if (routeObj.validate && !routeObj.validate.type) {
+                routeObj.validate.type = 'application/json';
+            } 
+            
             route = routeObj;
 
             routes.push(route);

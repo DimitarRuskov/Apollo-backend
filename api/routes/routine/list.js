@@ -18,8 +18,7 @@ module.exports = function(services) {
     route.validate = {
         body: Joi.object({
             categoryId: Joi.string().required()
-        }),
-        type: 'application/json'
+        })
     };
 
     return route;

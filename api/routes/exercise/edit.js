@@ -18,8 +18,7 @@ module.exports = function(services) {
                 description: Joi.string(),
                 image: Joi.string()
             }).required()
-        }),
-        type: 'application/json'
+        })
     };
 
     return route;
