@@ -16,7 +16,7 @@ module.exports = function(services) {
             token: token,
             userDetails: {
                 id: userDetails.id,
-                username: userDetails.user
+                username: userDetails.username
             }
         };
     };
