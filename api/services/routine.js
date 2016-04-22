@@ -1,5 +1,6 @@
 'use strict';
 var Routine = require('mongoose').model('Routine');
+var Helpers = require('./__helpers');
 
 exports.listRoutines = function * (categoryId) {
     try {
@@ -10,20 +11,20 @@ exports.listRoutines = function * (categoryId) {
     }
 };
 
-exports.createRoutine = function * (params) {
+exports.createRoutine = function * (params, createdBy) {
     try {
         var creationDate = new Date();
-        
         var imageUrl = null;
         var routine = new Routine({
             categoryId: params.categoryId,
             name: params.name,
             description: params.description,
-            createdAt: creationDate
+            createdAt: creationDate,
+            createdBy: createdBy
         });
         
         routine = yield routine.save();
-        imageUrl = yield storeImage(params.image, routine.id);
+        imageUrl = yield Helpers.storeImage(params.image, routine.id);
         routine = yield Routine.findByIdAndUpdate(routine.id, {imageUrl: imageUrl}, {new: true});
         
         return routine;
@@ -41,12 +42,3 @@ exports.editRoutine = function * (params) {
         throw err;
     }
 };
-
-function * storeImage(image, id) {
-    let extention = image.match(/^data:image\/(\w+);base64,/i)[1];
-    let data = image.replace(/^data:image\/\w+;base64,/, "");
-    let buffer = new Buffer(data, 'base64');
-    let imageUrl = '/images/' + id + '.' + extention;
-    yield co(fs.writeFile(path.join(config.app.publicDir, imageUrl), buffer));
-    return imageUrl;
-}

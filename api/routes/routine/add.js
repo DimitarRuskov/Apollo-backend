@@ -8,17 +8,20 @@ module.exports = function(services) {
     route.auth = true;
     
     route.handler = function * register(next) {
-        yield services['routine'].createRoutine(this.request.body.params);
+        var createdBy = this.state.user.id;
+        yield services['routine'].createRoutine(this.request.body, createdBy);
+        this.status = 200;
+        this.body = {
+            
+        };
     };
 
     route.validate = {
         body: Joi.object({
-            params: Joi.object({
-                categoryId: Joi.string().required(),
-                name: Joi.string().required(),
-                description: Joi.string().required(),
-                image: Joi.string().required()
-            }).required()
+            categoryId: Joi.string().required(),
+            name: Joi.string().required(),
+            description: Joi.string().required(),
+            image: Joi.string().required()
         })
     };
 

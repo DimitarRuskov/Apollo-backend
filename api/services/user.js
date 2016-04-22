@@ -21,18 +21,8 @@ exports.login = function * (params) {
             });
         })
     )) {
-<<<<<<< HEAD
-        var userInfo = {
-            roles: user._doc.roles,
-            user: user._doc.username,
-            id: user._doc._id.toString()
-        };
-                
-        return userInfo;
-=======
 
         return user.withoutPassword;
->>>>>>> 3e8d1738d6efee8d7233f5638623cd68efc068e6
     } else {
         var error = new Error('Username and password do not match.');
         error.status = 401;

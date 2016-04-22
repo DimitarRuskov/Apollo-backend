@@ -1,9 +1,6 @@
 'use strict';
-var fs = require('fs');
-var co = require('co');
-var path = require('path');
-var config = require('../../config/config');
 var Category = require('mongoose').model('Category');
+var Helpers = require('./__helpers');
 
 exports.listCategories = function * (params) {
     try {
@@ -27,7 +24,7 @@ exports.createCategory = function * (params, user) {
         });
         
         category = yield category.save();
-        imageUrl = yield storeImage(params.image, category.id);
+        imageUrl = yield Helpers.storeImage(params.image, category.id);
         category = yield Category.findByIdAndUpdate(category.id, {imageUrl: imageUrl}, {new: true});
         
         return category;        
@@ -35,12 +32,3 @@ exports.createCategory = function * (params, user) {
         throw err;
     }
 };
-
-function * storeImage(image, id) {
-    let extention = image.match(/^data:image\/(\w+);base64,/i)[1];
-    let data = image.replace(/^data:image\/\w+;base64,/, "");
-    let buffer = new Buffer(data, 'base64');
-    let imageUrl = '/images/' + id + '.' + extention;
-    yield co(fs.writeFile(path.join(config.app.publicDir, imageUrl), buffer));
-    return imageUrl;
-}

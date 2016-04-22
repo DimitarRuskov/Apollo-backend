@@ -10,9 +10,6 @@ var RoutineSchema = new Schema({
     createdAt: {type: Date, required: true},
     createdBy: {type: String, required: true},
     categoryId: {type: String, required: true},
-    duration: {type: Number, required: true},
-    difficulty: {type: Number, required: true, min: 1, max: 5},
-    exercises: {type: [String]},
     imageUrl: {type: String, required: false}
 });
 
