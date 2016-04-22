@@ -9,7 +9,6 @@ var CategorySchema = new Schema({
     createdAt: {type: Date, required: true},
     createdBy: {type: String, required: true},
     updatedAt: {type: Date},
-    routines: {type: [String]},
     imageUrl: {type: String}
 });
 

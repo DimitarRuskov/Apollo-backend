@@ -1,7 +1,8 @@
 'use strict';
 var Exercise = require('mongoose').model('Exercise');
+var ExerciseDetails = require('mongoose').model('ExerciseDetails');
 
-exports.listExercise = function * (params) {
+exports.listExercises = function * (params) {
     try {
         var exercise = yield Exercise.find().sort(params.orderBy || {});
         return exercise;

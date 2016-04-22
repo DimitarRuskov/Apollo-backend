@@ -5,11 +5,12 @@ var Schema = mongoose.Schema;
 var Category = require('mongoose').model('Category');
 
 var RoutineSchema = new Schema({
+    categoryId: {type: String, required: true},
     name: {type: String, required: true, unique: true},
     description: {type: String, required: true},
+    difficulty: {type: Number, required: true},
     createdAt: {type: Date, required: true},
     createdBy: {type: String, required: true},
-    categoryId: {type: String, required: true},
     imageUrl: {type: String, required: false}
 });
 

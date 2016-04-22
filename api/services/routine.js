@@ -13,13 +13,14 @@ exports.listRoutines = function * (categoryId) {
 
 exports.createRoutine = function * (params, createdBy) {
     try {
-        var creationDate = new Date();
+        var createdAt = new Date();
         var imageUrl = null;
         var routine = new Routine({
             categoryId: params.categoryId,
             name: params.name,
             description: params.description,
-            createdAt: creationDate,
+            difficulty: params.difficulty || 1,
+            createdAt: createdAt,
             createdBy: createdBy
         });
         

@@ -7,12 +7,12 @@ module.exports = function(services) {
     route.method = 'post';
     route.auth = true;
     
-    route.handler = function * register(next) {
+    route.handler = function * add(next) {
         var createdBy = this.state.user.id;
-        yield services['routine'].createRoutine(this.request.body, createdBy);
+        var routine = yield services['routine'].createRoutine(this.request.body, createdBy);
         this.status = 200;
         this.body = {
-            
+            routine: routine
         };
     };
 
@@ -21,7 +21,8 @@ module.exports = function(services) {
             categoryId: Joi.string().required(),
             name: Joi.string().required(),
             description: Joi.string().required(),
-            image: Joi.string().required()
+            image: Joi.string(),
+            difficulty: Joi.number().min(1).max(10).required()
         })
     };
 
