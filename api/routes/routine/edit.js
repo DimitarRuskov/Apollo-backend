@@ -13,11 +13,9 @@ module.exports = function(services) {
 
     route.validate = {
         body: Joi.object({
-            params: Joi.object({
-                name: Joi.string().required(),
-                description: Joi.string().required(),
-                image: Joi.string().required()
-            }).required()
+            name: Joi.string().required(),
+            description: Joi.string().required(),
+            image: Joi.string().required()
         })
     };
 

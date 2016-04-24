@@ -1,6 +1,7 @@
 'use strict';
 var User = require('mongoose').model('User');
 var bcrypt = require('bcrypt-nodejs');
+var Helpers = require('./__helpers');
 
 exports.login = function * (params) {
     var user = yield User.findOne({username: params.username});
@@ -34,7 +35,7 @@ exports.login = function * (params) {
 
 exports.register = function * (params) {
     try {
-        var user = new User({ username: params.username, password: params.password, registrationDate: new Date() });
+        var user = new User({ username: params.username, email: params.email, password: params.password, registeredAt: new Date() });
         user = yield user.save();
         
         return user.withoutPassword;
@@ -66,4 +67,28 @@ exports.getProfile = function * (id) {
         throw error;
     }
     return user;
+};
+
+exports.updateProfile = function * (params, id) {
+    try {
+        var imageUrl;
+        var oldImageUrl;
+        var userDetails;
+        var updatedValues = {
+            name: params.name,
+            email: params.email,
+            weight: params.weight,
+            height: params.height
+        };
+        if (params.image) {
+            imageUrl = yield Helpers.storeImage(params.image, id);
+            updatedValues.imageUrl = imageUrl;
+        }
+        updatedValues = JSON.parse(JSON.stringify(updatedValues));
+        userDetails = yield User.findByIdAndUpdate(id, updatedValues, {new: true});
+        
+        return userDetails;
+    } catch (err) {
+        throw err;
+    }
 };
