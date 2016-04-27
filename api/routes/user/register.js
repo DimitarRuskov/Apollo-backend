@@ -13,7 +13,8 @@ module.exports = function(services) {
         
         this.status = 200;
         this.body = {
-            token: token
+            token: token,
+            userDetails: user
         };
     };
 

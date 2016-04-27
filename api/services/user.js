@@ -22,7 +22,6 @@ exports.login = function * (params) {
             });
         })
     )) {
-
         return user.withoutPassword;
     } else {
         var error = new Error('Username and password do not match.');
