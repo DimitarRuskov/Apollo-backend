@@ -9,7 +9,7 @@ module.exports = function(services) {
     
     route.handler = function * updateProfile(next) {
         var id = this.state.user.id;
-        var user = yield services['user'].updateProfile(this.request.body, id);
+        var user = yield services.get('user').updateProfile(this.request.body, id);
         this.status = 200;
         this.body = {
             user: user

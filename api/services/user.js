@@ -1,7 +1,7 @@
 'use strict';
 var User = require('mongoose').model('User');
 var bcrypt = require('bcrypt-nodejs');
-var Helpers = require('./__helpers');
+var Helpers = require('./../helpers/storeImage');
 
 exports.login = function * (params) {
     var user = yield User.findOne({username: params.username});

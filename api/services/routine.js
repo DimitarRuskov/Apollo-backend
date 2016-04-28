@@ -1,6 +1,6 @@
 'use strict';
 var Routine = require('mongoose').model('Routine');
-var Helpers = require('./__helpers');
+var Helpers = require('./../helpers/storeImage');
 
 exports.listRoutines = function * (categoryId) {
     try {

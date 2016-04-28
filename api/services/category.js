@@ -1,6 +1,6 @@
 'use strict';
 var Category = require('mongoose').model('Category');
-var Helpers = require('./__helpers');
+var Helpers = require('./../helpers/storeImage');
 
 exports.listCategories = function * (params) {
     try {
@@ -27,7 +27,7 @@ exports.createCategory = function * (params, user) {
         imageUrl = yield Helpers.storeImage(params.image, category.id);
         category = yield Category.findByIdAndUpdate(category.id, {imageUrl: imageUrl}, {new: true});
         
-        return category;        
+        return category;
     } catch (err) {
         throw err;
     }

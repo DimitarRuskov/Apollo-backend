@@ -9,7 +9,7 @@ module.exports = function(services) {
     
     route.handler = function * add(next) {
         var createdBy = this.state.user.id;
-        var routine = yield services['routine'].createRoutine(this.request.body, createdBy);
+        var routine = yield services.get('routine').createRoutine(this.request.body, createdBy);
         this.status = 200;
         this.body = {
             routine: routine

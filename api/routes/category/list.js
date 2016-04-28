@@ -6,7 +6,7 @@ module.exports = function(services) {
     route.path = 'list';
     route.method = 'post';
     route.handler = function * list(next) {
-        var categories = yield services['category'].listCategories(this.request.body);
+        var categories = yield services.get('category').listCategories(this.request.body);
         
         this.status = 200;
         this.body = {

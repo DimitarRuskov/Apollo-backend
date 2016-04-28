@@ -8,7 +8,7 @@ module.exports = function(services) {
     route.auth = true;
     
     route.handler = function * register(next) {
-        var category = yield services['category'].createCategory(this.request.body, this.state.user);
+        var category = yield services.get('category').createCategory(this.request.body, this.state.user);
         
         this.status = 200;
         this.body = {

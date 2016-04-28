@@ -1,4 +1,4 @@
-var buildError = require('./buildError');
+var buildError = require('./../buildError');
 
 module.exports = function(error) {
     var result = new Error();

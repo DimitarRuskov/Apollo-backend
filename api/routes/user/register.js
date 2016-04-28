@@ -7,9 +7,9 @@ module.exports = function(services) {
     route.method = 'post';
 
     route.handler = function * register(next) {
-        var user = yield services['user'].register(this.request.body.params);
+        var user = yield services.get('user').register(this.request.body.params);
         
-        var token = yield services['token'].create(user);
+        var token = yield services.get('token').create(user);
         
         this.status = 200;
         this.body = {

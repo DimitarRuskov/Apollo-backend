@@ -8,7 +8,7 @@ module.exports = function(services) {
     route.auth = true;
     
     route.handler = function * register(next) {
-        yield services['routine'].editRoutine(this.request.body.params);
+        yield services.get('routine').editRoutine(this.request.body.params);
     };
 
     route.validate = {

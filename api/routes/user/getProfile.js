@@ -9,7 +9,7 @@ module.exports = function(services) {
     
     route.handler = function * getProfile(next) {
         var id = this.state.user.id;
-        var profileDetails = yield services['user'].getProfile(id);
+        var profileDetails = yield services.get('user').getProfile(id);
         this.status = 200;
         this.body = {
             profileDetails: profileDetails
