@@ -2,6 +2,7 @@ var router = require('koa-joi-router');
 
 var services = require('./services')();
 var routes = require('./routes')();
+var queryParser = require('./middlewares/queryParser');
 
 module.exports = function(app) {
     var api = {};
@@ -12,6 +13,7 @@ module.exports = function(app) {
         services.load();
         routes.load(services);
         apiRoutes = routes.get();
+        app.use(queryParser);
         registerRoutes();
     };
     
