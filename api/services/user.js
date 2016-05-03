@@ -55,8 +55,8 @@ exports.getCurrentUser = function * (params) {
     
 };
 
-exports.getProfile = function * (id) {
-    var user = yield User.findById(id);
+exports.getProfile = function * (params) {
+    var user = yield User.findOne({username: params.username});
     
     if (!user) {
         var error = new Error('Error fetching profile details.');
@@ -65,7 +65,8 @@ exports.getProfile = function * (id) {
         
         throw error;
     }
-    return user;
+    
+    return user.withoutPassword;
 };
 
 exports.updateProfile = function * (params, id) {
