@@ -13,11 +13,6 @@ module.exports = function(services) {
             this.body = {
                 userDetails: user
             };
-        },
-        validate: {
-            params: {
-                username: Joi.required()
-            }
         }
     };
     
