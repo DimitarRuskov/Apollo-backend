@@ -8,7 +8,6 @@ const jwt = require('koa-jwt');
 const path = require('path');
 
 module.exports = function(app, config) {
-    
     app.keys = config.app.keys;
     app.use(serve(path.join(config.app.root, 'public')));
 

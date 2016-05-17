@@ -4,7 +4,7 @@ module.exports = function(services) {
     var route = {};
 
     route.path = 'list';
-    route.method = 'post';
+    route.method = 'get';
     
     route.handler = function * list(next) {
         var routines = yield services.get('routine').listRoutines(this.request.body.categoryId);

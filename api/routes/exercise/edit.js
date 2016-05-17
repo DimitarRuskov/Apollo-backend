@@ -4,7 +4,7 @@ module.exports = function(services) {
     var route = {};
 
     route.path = 'edit';
-    route.method = 'post';
+    route.method = 'put';
     route.auth = true;
     
     route.handler = function * register(next) {

@@ -7,7 +7,7 @@ module.exports = function(services) {
     route.method = 'post';
     route.auth = true;
     
-    route.handler = function * login(next) {
+    route.handler = function * (next) {
         this.status = 200;
         this.body = {
         };

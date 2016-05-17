@@ -3,11 +3,11 @@ var Joi = require('koa-joi-router').Joi;
 module.exports = function(services) {
     var route = {};
 
-    route.path = 'updateProfile';
-    route.method = 'post';
+    route.path = ':username';
+    route.method = 'put';
     route.auth = true;
     
-    route.handler = function * updateProfile(next) {
+    route.handler = function * (next) {
         var id = this.state.user.id;
         var user = yield services.get('user').updateProfile(this.request.body, id);
         this.status = 200;

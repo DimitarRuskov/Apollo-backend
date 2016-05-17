@@ -14,7 +14,7 @@ var RoutineSchema = new Schema({
     imageUrl: {type: String, required: false}
 });
 
-RoutineSchema.pre('save', function (done) {
+RoutineSchema.pre('save', function(done) {
     co.wrap(function * () {
         try {
             var category = yield Category.findById(this.categoryId);

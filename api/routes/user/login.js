@@ -6,7 +6,7 @@ module.exports = function(services) {
     route.path = 'login';
     route.method = 'post';
 
-    route.handler = function * login(next) {
+    route.handler = function * (next) {
         var userDetails = yield services.get('user').login(this.request.body);
         var token = yield services.get('token').create(userDetails);
         

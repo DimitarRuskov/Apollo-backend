@@ -38,7 +38,7 @@ UserSchema.pre('save', function(done) {
     }).call(this).then(done);
 });
 
-UserSchema.virtual('withoutPassword').get(function () {
+UserSchema.virtual('withoutPassword').get(function() {
     return {
         id: this._id.toString(),
         username: this.username,

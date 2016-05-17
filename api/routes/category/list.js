@@ -1,10 +1,9 @@
-var Joi = require('koa-joi-router').Joi;
-
 module.exports = function(services) {
     var route = {};
 
     route.path = 'list';
-    route.method = 'post';
+    route.method = 'get';
+    
     route.handler = function * list(next) {
         var categories = yield services.get('category').listCategories(this.request.body);
         
@@ -12,12 +11,6 @@ module.exports = function(services) {
         this.body = {
             categories: categories
         };
-    };
-    
-    route.validate = {
-        body: Joi.object({
-            orderBy: Joi.object()
-        })
     };
     
     return route;
