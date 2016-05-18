@@ -9,10 +9,10 @@ module.exports = function(services) {
     route.handler = function * (next) {
         var userDetails = yield services.get('user').login(this.request.body);
         var token = yield services.get('token').create(userDetails);
+        userDetails.token = token;
         
         this.status = 200;
         this.body = {
-            token: token,
             userDetails: userDetails
         };
     };

@@ -7,18 +7,12 @@ module.exports = function(services) {
     route.method = 'get';
     
     route.handler = function * list(next) {
-        var routines = yield services.get('routine').listRoutines(this.request.body.categoryId);
+        var routines = yield services.get('routine').listRoutines(this.query.categoryId);
         
         this.status = 200;
         this.body = {
             routines: routines
         };
-    };
-
-    route.validate = {
-        body: Joi.object({
-            categoryId: Joi.string().required()
-        })
     };
 
     return route;
