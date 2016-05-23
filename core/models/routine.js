@@ -11,7 +11,17 @@ var RoutineSchema = new Schema({
     difficulty: {type: Number, required: true},
     createdAt: {type: Date, required: true},
     createdBy: {type: String, required: true},
-    imageUrl: {type: String, required: false}
+    imageUrl: {type: String, required: false},
+    comments: [
+        {
+            content: {type: String, required: true},
+            createdBy: {
+                id: {type: String, required: true},
+                username: {type: String, required: true},
+                imageUrl: {type: String, required: true}    
+            },
+        }
+    ]
 });
 
 RoutineSchema.pre('save', function(done) {

@@ -43,3 +43,26 @@ exports.editRoutine = function * (params) {
         throw err;
     }
 };
+
+exports.comment = function * (params, createdBy) {
+    try {
+        var createdAt = new Date();
+        
+        var routine = yield Routine.findByIdAndUpdate(
+            params.routineId,
+            {$push: {'comments': {
+                content: params.content,
+                createdAt: createdAt,
+                createdBy: {
+                    id: createdBy.id,
+                    username: createdBy.username,
+                    imageUrl: createdBy.imageUrl
+                }
+            }}}, {safe: true, upsert: true, new: true});
+            
+        return routine;
+        
+    } catch (err) {
+        throw err;
+    }
+}
