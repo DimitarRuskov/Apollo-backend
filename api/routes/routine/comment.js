@@ -14,10 +14,10 @@ module.exports = function(services) {
             imageUrl: this.state.user.imageUrl
         }
         
-        var routine = yield services.get('routine').comment(this.request.body, createdBy);
+        var comment = yield services.get('comment').comment(this.request.body, createdBy);
         this.status = 200;
         this.body = {
-            routine: routine
+            comment: comment
         };
     };
 

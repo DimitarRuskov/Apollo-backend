@@ -58,9 +58,11 @@ exports.comment = function * (params, createdBy) {
                     username: createdBy.username,
                     imageUrl: createdBy.imageUrl
                 }
-            }}}, {safe: true, upsert: true, new: true});
+            }}}, {new: true});
             
-        return routine;
+        var comments = yield Routine.findById(params.routineId).select('comments'); //  the upper func returns comments without the new one
+            
+        return comments;
         
     } catch (err) {
         throw err;

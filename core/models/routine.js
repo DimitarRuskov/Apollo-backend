@@ -11,18 +11,18 @@ var RoutineSchema = new Schema({
     difficulty: {type: Number, required: true},
     createdAt: {type: Date, required: true},
     createdBy: {type: String, required: true},
-    imageUrl: {type: String, required: false},
-    comments: [
-        {
-            content: {type: String, required: true},
-            createdBy: {
-                id: {type: String, required: true},
-                username: {type: String, required: true},
-                imageUrl: {type: String, required: true}    
-            },
-        }
-    ]
+    imageUrl: {type: String, required: false}
 });
+
+var CommentSchema = new Schema({
+    routineId: {type: String, required: true},
+    content: {type: String, required: true},
+    createdBy: {
+        id: {type: String, required: true},
+        username: {type: String, required: true},
+        imageUrl: {type: String, required: true}    
+    }
+})
 
 RoutineSchema.pre('save', function(done) {
     co.wrap(function * () {
@@ -37,3 +37,4 @@ RoutineSchema.pre('save', function(done) {
 });
 
 mongoose.model('Routine', RoutineSchema);
+mongoose.model('Comment', CommentSchema);
