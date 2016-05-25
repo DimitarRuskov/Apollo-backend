@@ -17,6 +17,7 @@ var RoutineSchema = new Schema({
 var CommentSchema = new Schema({
     routineId: {type: String, required: true},
     content: {type: String, required: true},
+    createdAt: {type: Date, required: true},
     createdBy: {
         id: {type: String, required: true},
         username: {type: String, required: true},
