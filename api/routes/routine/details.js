@@ -7,8 +7,11 @@ module.exports = function(services) {
     route.method = 'get';
 
     route.handler = function * list(next) {
-        var comments = yield services.get('comment').listComments(this.query.routineId);
-        var exercises = yield services.get('exercise').listExercises(this.query.routineId);
+        var options = {
+            routineId: this.query.routineId
+        }
+        var comments = yield services.get('comment').listComments(options);
+        var exercises = yield services.get('exercise').listExercises(options);
 
         this.status = 200;
         this.body = {

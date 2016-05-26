@@ -38,7 +38,7 @@ exports.createComment = function * (params, createdBy) {
 
 exports.listComments = function * (params) {
     try {
-        var comments = yield Comment.find().sort(params.orderBy || {});
+        var comments = yield Comment.find({routineId: params.routineId}).sort(params.orderBy || {createdAt: -1});
         return comments;
     } catch (err) {
         throw err;
