@@ -4,7 +4,7 @@ var authentication = require('./../middlewares/authentication');
 
 module.exports = function() {
     var routes = [];
-    
+
     function loadRoutes(services) {
         var routesPath = getRoutes();
 
@@ -20,10 +20,10 @@ module.exports = function() {
             }
         });
     }
-    
+
     function prepareRoute(route, routeDef) {
         var routeObj = route;
-        
+
         routeObj.handler = [routeObj.handler];
 
         if (!routeObj.customPath) {
@@ -31,28 +31,28 @@ module.exports = function() {
         }
 
         routeObj.path = routeObj.path.replace(/\\/g, '/');
-        
+
         if (routeObj.auth) {
             routeObj.handler = [authentication].concat(routeObj.handler);
         }
-        
+
         if (routeObj.validate && !routeObj.validate.type) {
             routeObj.validate.type = 'application/json';
         }
-        
+
         return routeObj;
     }
-    
+
     function loadIndexedRoute(route, routeDef) {
         var result = [];
-        
+
         route.subRoutes.forEach(function(route) {
             result.push(prepareRoute(route, routeDef));
         });
-        
+
         return result;
     }
-    
+
     function getRoutes(basePath, baseRoutePath) {
         basePath = basePath || __dirname;
         baseRoutePath = baseRoutePath || '/';
@@ -85,11 +85,11 @@ module.exports = function() {
         }
         return routes;
     }
-    
+
     function get() {
         return routes;
     }
-        
+
     return {
         load: loadRoutes,
         get: get

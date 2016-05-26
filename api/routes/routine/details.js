@@ -5,11 +5,11 @@ module.exports = function(services) {
 
     route.path = 'details';
     route.method = 'get';
-    
+
     route.handler = function * list(next) {
         var comments = yield services.get('comment').listComments(this.query.routineId);
-        var exercises = [];
-        
+        var exercises = yield services.get('exercise').listExercises(this.query.routineId);
+
         this.status = 200;
         this.body = {
             exercises: exercises,

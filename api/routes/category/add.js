@@ -6,10 +6,10 @@ module.exports = function(services) {
     route.path = 'add';
     route.method = 'post';
     route.auth = true;
-    
-    route.handler = function * register(next) {
+
+    route.handler = function * add(next) {
         var category = yield services.get('category').createCategory(this.request.body, this.state.user);
-        
+
         this.status = 200;
         this.body = {
             category: category

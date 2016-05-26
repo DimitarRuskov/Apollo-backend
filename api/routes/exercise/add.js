@@ -6,19 +6,14 @@ module.exports = function(services) {
     route.path = 'add';
     route.method = 'post';
     route.auth = true;
-    
-    route.handler = function * register(next) {
-        yield services.get('exercise').createExercise(this.request.body.params);
-    };
 
-    route.validate = {
-        body: Joi.object({
-            params: Joi.object({
-                name: Joi.string().required(),
-                description: Joi.string().required(),
-                image: Joi.string().required()
-            }).required()
-        })
+    route.handler = function * add(next) {
+        var exercise = yield services.get('exercise').createExercise(this.request.body);
+
+        this.status = 200;
+        this.body = {
+            exercise: exercise
+        };
     };
 
     return route;

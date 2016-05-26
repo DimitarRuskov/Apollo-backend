@@ -3,22 +3,20 @@
 var Routine = require('mongoose').model('Routine');
 var Comment = require('mongoose').model('Comment');
 
-exports.comment = function * (params, createdBy) {
+exports.createComment = function * (params, createdBy) {
     try {
-        
-        var routine = yield Routine.findOne({'_id':  params.routineId});
-    
+        var routine = yield Routine.findOne({'_id': params.routineId});
+
         if (!routine) {
             var error = new Error('Invalid routine');
             error.status = 413;
             error.name = 'InvalidParams';
-            
+
             throw error;
         }
-        
-        
+
         var createdAt = new Date();
-        
+
         var comment = new Comment({
             routineId: params.routineId,
             content: params.content,
@@ -29,14 +27,14 @@ exports.comment = function * (params, createdBy) {
                 imageUrl: createdBy.imageUrl
             }
         });
-        
+
         comment = yield comment.save();
         return comment;
-        
+
     } catch (err) {
         throw err;
     }
-}
+};
 
 exports.listComments = function * (params) {
     try {
@@ -45,4 +43,4 @@ exports.listComments = function * (params) {
     } catch (err) {
         throw err;
     }
-}
+};

@@ -1,10 +1,9 @@
 'use strict';
 var Exercise = require('mongoose').model('Exercise');
-var ExerciseDetails = require('mongoose').model('ExerciseDetails');
 
 exports.listExercises = function * (params) {
     try {
-        var exercise = yield Exercise.find().sort(params.orderBy || {});
+        var exercise = yield Exercise.find({'routineId': params.routineId}).sort(params.orderBy || {});
         return exercise;
     } catch (err) {
         throw err;
@@ -13,19 +12,19 @@ exports.listExercises = function * (params) {
 
 exports.createExercise = function * (params) {
     try {
-        var exercise = new Exercise({});
-        
-        exercise = yield exercise.save();
-        return exercise;
-    } catch (err) {
-        throw err;
-    }
-};
+        var exercise = new Exercise({
+            routineId: params.routineId,
+            order: params.order,
+            repetitions: params.repetitions,
+            sets: params.sets,
+            duration: params.duration,
+            break: params.break,
+            name: params.name,
+            description: params.description,
+            imageUrl: params.imageUrl
+        });
 
-exports.editExercise = function * (params) {
-    try {
-        var exercise = null;
-            
+        exercise = yield exercise.save();
         return exercise;
     } catch (err) {
         throw err;
