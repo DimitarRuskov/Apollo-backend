@@ -1,10 +1,17 @@
 'use strict';
 var Routine = require('mongoose').model('Routine');
 var Helpers = require('./../helpers/storeImage');
+var Lazy = require('lazy.js');
 
-exports.listRoutines = function * (categoryId) {
+exports.listRoutines = function * (params) {
     try {
-        var routines = yield Routine.find({ 'categoryId': categoryId });
+        var options = {
+            categoryId: params.categoryId,
+        }
+        if (params.name) {
+            options.name = new RegExp(params.name, "i")
+        }
+        var routines = yield Routine.find(options);
         return routines;
     } catch (err) {
         throw err;

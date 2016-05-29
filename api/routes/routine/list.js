@@ -7,7 +7,7 @@ module.exports = function(services) {
     route.method = 'get';
     
     route.handler = function * list(next) {
-        var routines = yield services.get('routine').listRoutines(this.query.categoryId);
+        var routines = yield services.get('routine').listRoutines(this.query);
         
         this.status = 200;
         this.body = {

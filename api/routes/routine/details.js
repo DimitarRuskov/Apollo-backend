@@ -17,7 +17,7 @@ module.exports = function(services) {
         this.body = {
             exercises: exercises,
             comments: commentsData.comments,
-            commentsCount: commentsData.count
+            commentCount: commentsData.count
         };
     };
 
