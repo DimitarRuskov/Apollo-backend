@@ -38,8 +38,15 @@ exports.createComment = function * (params, createdBy) {
 
 exports.listComments = function * (params) {
     try {
-        var comments = yield Comment.find({routineId: params.routineId}).sort(params.orderBy || {createdAt: -1});
-        return comments;
+        var count = yield Comment.count({routineId: params.routineId});
+        var comments = yield Comment.find({routineId: params.routineId})
+            .sort(params.orderBy || {createdAt: -1})
+            .skip((Number(params.page) - 1) * 10)
+            .limit(10);
+        return {
+            count: count,
+            comments: comments
+        };
     } catch (err) {
         throw err;
     }

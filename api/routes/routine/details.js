@@ -10,13 +10,14 @@ module.exports = function(services) {
         var options = {
             routineId: this.query.routineId
         }
-        var comments = yield services.get('comment').listComments(options);
+        var commentsData = yield services.get('comment').listComments(options);
         var exercises = yield services.get('exercise').listExercises(options);
 
         this.status = 200;
         this.body = {
             exercises: exercises,
-            comments: comments
+            comments: commentsData.comments,
+            commentsCount: commentsData.count
         };
     };
 

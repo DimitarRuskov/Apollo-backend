@@ -7,11 +7,12 @@ module.exports = function(services) {
     route.method = 'get';
     
     route.handler = function * list(next) {
-        var comments = yield services.get('comment').listComments({routineId: this.query.routineId});
+        var commentsData = yield services.get('comment').listComments(this.query);
         
         this.status = 200;
         this.body = {
-            comments: comments
+            comments: commentsData.comments,
+            commentCount: commentsData.count
         };
     };
 
