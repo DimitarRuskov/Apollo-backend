@@ -8,7 +8,11 @@ module.exports = function(services) {
     route.auth = true;
     
     route.handler = function * add(next) {
-        var createdBy = this.state.user.id;
+        var createdBy = {
+            id: this.state.user.id,
+            username: this.state.user.username
+        };
+
         var routine = yield services.get('routine').createRoutine(this.request.body, createdBy);
         this.status = 200;
         this.body = {

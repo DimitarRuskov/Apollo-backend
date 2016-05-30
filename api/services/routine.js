@@ -24,7 +24,10 @@ exports.createRoutine = function * (params, createdBy) {
         var createdAt = new Date();
         var imageUrl = null;
         var routine = new Routine({
-            categoryId: params.categoryId,
+            category: {
+                id: params.categoryId,
+                name: 'default'
+            },
             name: params.name,
             description: params.description,
             difficulty: params.difficulty || 1,
