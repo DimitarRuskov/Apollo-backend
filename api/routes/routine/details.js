@@ -9,7 +9,8 @@ module.exports = function(services) {
     route.handler = function * list(next) {
         var options = {
             routineId: this.query.routineId
-        }
+        };
+        
         var commentsData = yield services.get('comment').listComments(options);
         var exercises = yield services.get('exercise').listExercises(options);
 

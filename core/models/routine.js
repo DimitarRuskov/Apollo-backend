@@ -5,12 +5,18 @@ var Schema = mongoose.Schema;
 var Category = require('mongoose').model('Category');
 
 var RoutineSchema = new Schema({
-    categoryId: {type: String, required: true},
+    category: {
+        name: {type: String, required: true},
+        id: {type: String, required: true}
+    },
     name: {type: String, required: true, unique: true},
     description: {type: String, required: true},
     difficulty: {type: Number, required: true},
     createdAt: {type: Date, required: true},
-    createdBy: {type: String, required: true},
+    createdBy: {
+        username: {type: String, required: true},
+        id: {type: String, required: true}
+    },
     imageUrl: {type: String, required: false}
 });
 
@@ -21,9 +27,9 @@ var CommentSchema = new Schema({
     createdBy: {
         id: {type: String, required: true},
         username: {type: String, required: true},
-        imageUrl: {type: String, required: true}    
+        imageUrl: {type: String, required: true}
     }
-})
+});
 
 RoutineSchema.pre('save', function(done) {
     co.wrap(function * () {

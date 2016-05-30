@@ -12,7 +12,7 @@ module.exports = function(services) {
             id: this.state.user.id,
             username: this.state.user.username,
             imageUrl: this.state.user.imageUrl
-        }
+        };
 
         var comment = yield services.get('comment').createComment(this.request.body, createdBy);
         this.status = 200;

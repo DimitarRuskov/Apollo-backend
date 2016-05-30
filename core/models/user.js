@@ -6,14 +6,14 @@ var Schema = mongoose.Schema;
 var co = require('co');
 
 var UserSchema = new Schema({
-        username: {type: String, required: true, unique: true, lowercase: true},
-        name: {type: String, required: false},
-        email: {type: String, required: true},
-        password: {type: String, required: true},
-        registeredAt: {type: Date, required: true},
-        roles: {type: [String]},
-        imageUrl: {type: String, required: false}
-    }, {
+    username: {type: String, required: true, unique: true, lowercase: true},
+    name: {type: String, required: false},
+    email: {type: String, required: true},
+    password: {type: String, required: true},
+    registeredAt: {type: Date, required: true},
+    roles: {type: [String]},
+    imageUrl: {type: String, required: false}
+}, {
     toJSON: {
         transform: function(doc, ret, options) {
             delete ret.password;

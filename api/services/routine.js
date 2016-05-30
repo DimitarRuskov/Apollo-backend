@@ -1,16 +1,17 @@
 'use strict';
 var Routine = require('mongoose').model('Routine');
 var Helpers = require('./../helpers/storeImage');
-var Lazy = require('lazy.js');
 
 exports.listRoutines = function * (params) {
     try {
         var options = {
-            categoryId: params.categoryId,
-        }
+            categoryId: params.category
+        };
+        
         if (params.name) {
-            options.name = new RegExp(params.name, "i")
+            options.name = new RegExp(params.name, 'i');
         }
+        
         var routines = yield Routine.find(options);
         return routines;
     } catch (err) {
@@ -55,7 +56,7 @@ exports.comment = function * (params, createdBy) {
     try {
         var createdAt = new Date();
         
-        var routine = yield Routine.findByIdAndUpdate(
+        yield Routine.findByIdAndUpdate(
             params.routineId,
             {$push: {'comments': {
                 content: params.content,
@@ -70,8 +71,7 @@ exports.comment = function * (params, createdBy) {
         var comments = yield Routine.findById(params.routineId).select('comments'); //  the upper func returns comments without the new one
             
         return comments;
-        
     } catch (err) {
         throw err;
     }
-}
+};

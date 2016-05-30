@@ -20,7 +20,10 @@ exports.createCategory = function * (params, user) {
             name: params.name,
             description: params.description,
             createdAt: creationDate,
-            createdBy: user.id
+            createdBy: {
+                id: user.id,
+                username: user.username
+            }
         });
         
         category = yield category.save();

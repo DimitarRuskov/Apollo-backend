@@ -30,7 +30,6 @@ exports.createComment = function * (params, createdBy) {
 
         comment = yield comment.save();
         return comment;
-
     } catch (err) {
         throw err;
     }
