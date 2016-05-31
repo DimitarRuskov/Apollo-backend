@@ -3,9 +3,12 @@ var Joi = require('koa-joi-router').Joi;
 module.exports = function(services) {
     var route = {};
 
-    route.path = 'comment';
+    route.path = '';
     route.method = 'post';
     route.auth = true;
+    route.pathParams = {
+        'routine': 'routine'
+    };
 
     route.handler = function * add(next) {
         var createdBy = {
@@ -13,8 +16,13 @@ module.exports = function(services) {
             username: this.state.user.username,
             imageUrl: this.state.user.imageUrl
         };
-
-        var comment = yield services.get('comment').createComment(this.request.body, createdBy);
+        
+        var params = {
+            routineId: this.params.routine,
+            content: this.request.body.content
+        };
+        
+        var comment = yield services.get('comment').createComment(params, createdBy);
         this.status = 200;
         this.body = {
             comment: comment
@@ -23,7 +31,6 @@ module.exports = function(services) {
 
     route.validate = {
         body: Joi.object({
-            routineId: Joi.string().required(),
             content: Joi.string().required()
         })
     };

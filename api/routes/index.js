@@ -29,6 +29,22 @@ module.exports = function() {
         if (!routeObj.customPath) {
             routeObj.path = path.join(routeDef.parentRoutePath, routeObj.path);
         }
+        
+        if (routeObj.pathParams) {
+            var pathParts = routeObj.path.split('\\');
+            
+            for (var pathParam in routeObj.pathParams) {
+                if (routeObj.pathParams[pathParam]) {
+                    for (var i = 0; i < pathParts.length; i++) {
+                        if (pathParts[i] === pathParam) {
+                            pathParts[i] = path.join(pathParts[i], ':' + routeObj.pathParams[pathParam]);
+                        }
+                    }
+                }
+            }
+            
+            routeObj.path = pathParts.join('\\');
+        }
 
         routeObj.path = routeObj.path.replace(/\\/g, '/');
 

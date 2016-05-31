@@ -1,13 +1,18 @@
-var Joi = require('koa-joi-router').Joi;
-
 module.exports = function(services) {
     var route = {};
 
-    route.path = 'listComments';
+    route.path = '';
     route.method = 'get';
+    route.pathParams = {
+        'routine': 'routine'
+    };
     
     route.handler = function * list(next) {
-        var commentsData = yield services.get('comment').listComments(this.query);
+        var params = {
+            routineId: this.params.routine
+        };
+        
+        var commentsData = yield services.get('comment').listComments(params);
         
         this.status = 200;
         this.body = {
