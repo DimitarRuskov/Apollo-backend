@@ -4,7 +4,8 @@ module.exports = function(services) {
     route.path = '';
     route.method = 'get';
     route.pathParams = {
-        'routine': 'routine'
+        'routines': 'routine',
+        'categories': 'category'
     };
     
     route.handler = function * list(next) {

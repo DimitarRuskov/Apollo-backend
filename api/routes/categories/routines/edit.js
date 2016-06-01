@@ -3,12 +3,19 @@ var Joi = require('koa-joi-router').Joi;
 module.exports = function(services) {
     var route = {};
 
-    route.path = 'edit';
+    route.path = '';
     route.method = 'put';
     route.auth = true;
+    route.pathParams = {
+        'routines': 'routine',
+        'categories': 'category'
+    };
     
     route.handler = function * register(next) {
-        yield services.get('routine').editRoutine(this.request.body.params);
+        var params = JSON.parse(JSON.stringify(this.request.body.params));
+        params.routineId = this.params.routine;
+        
+        yield services.get('routine').editRoutine(params);
     };
 
     route.validate = {

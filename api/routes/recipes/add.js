@@ -3,7 +3,7 @@ var Joi = require('koa-joi-router').Joi;
 module.exports = function(services) {
     var route = {};
 
-    route.path = 'add';
+    route.path = '';
     route.method = 'post';
     route.auth = true;
     

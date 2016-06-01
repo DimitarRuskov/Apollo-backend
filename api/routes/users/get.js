@@ -1,8 +1,12 @@
 module.exports = function(services) {
     var route = {};
 
-    route.path = ':username';
+    route.path = '';
     route.method = 'get';
+    route.auth = true;
+    route.pathParams = {
+        'users': 'username'
+    };
     
     route.handler = function * (next) {
         var user = yield services.get('user').getProfile(this.params);

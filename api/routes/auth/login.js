@@ -7,7 +7,7 @@ module.exports = function(services) {
     route.method = 'post';
 
     route.handler = function * (next) {
-        var userDetails = yield services.get('user').login(this.request.body);
+        var userDetails = yield services.get('auth').login(this.request.body);
         var token = yield services.get('token').create(userDetails);
         userDetails.token = token;
         

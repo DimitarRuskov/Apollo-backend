@@ -1,11 +1,11 @@
 module.exports = function(services) {
     var route = {};
 
-    route.path = 'list';
+    route.path = '';
     route.method = 'get';
     
     route.handler = function * list(next) {
-        var categories = yield services.get('category').listCategories(this.query);
+        var categories = yield services.get('category').listCategories(this.params);
         
         this.status = 200;
         this.body = {

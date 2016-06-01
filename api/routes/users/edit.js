@@ -3,9 +3,12 @@ var Joi = require('koa-joi-router').Joi;
 module.exports = function(services) {
     var route = {};
 
-    route.path = 'edit';
+    route.path = '';
     route.method = 'post';
     route.auth = true;
+    route.pathParams = {
+        'users': 'username'
+    };
     
     route.handler = function * (next) {
         this.status = 200;

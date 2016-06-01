@@ -7,7 +7,8 @@ module.exports = function(services) {
     route.method = 'post';
     route.auth = true;
     route.pathParams = {
-        'routine': 'routine'
+        'routines': 'routine',
+        'categories': 'category'
     };
 
     route.handler = function * add(next) {
