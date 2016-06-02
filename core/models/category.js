@@ -8,7 +8,7 @@ var CategorySchema = new Schema({
     description: {type: String, required: true},
     createdAt: {type: Date, required: true},
     createdBy: {
-        name: {type: String, required: true},
+        username: {type: String, required: true},
         id: {type: String, required: true}
     },
     updatedAt: {type: Date},
