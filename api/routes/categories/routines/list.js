@@ -10,7 +10,13 @@ module.exports = function(services) {
     };
     
     route.handler = function * list(next) {
-        var routines = yield services.get('routine').listRoutines(this.params);
+        var params = this.params;
+        
+        if (this.query && this.query.name) {
+            params.name = this.query.name;
+        }
+        
+        var routines = yield services.get('routine').listRoutines(params);
         
         this.status = 200;
         this.body = {
