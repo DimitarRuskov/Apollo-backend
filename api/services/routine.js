@@ -2,6 +2,13 @@
 var Routine = require('mongoose').model('Routine');
 var Helpers = require('./../helpers/storeImage');
 
+// checks if routine matches the specified category
+function initialCheck(params) {
+    if (params.category !== params.routine.categoryId) {
+        throw new Error('Routine not found');
+    }
+}
+
 exports.listRoutines = function * (params) {
     try {
         var options = {
@@ -13,9 +20,25 @@ exports.listRoutines = function * (params) {
         }
         
         var routines = yield Routine.find(options);
+        
         return routines;
     } catch (err) {
         throw err;
+    }
+};
+
+exports.getRoutine = function * (params) {
+    try {
+        var options = {
+            categoryId: params.category,
+            _id: params.routine
+        };
+        
+        var routines = yield Routine.find(options);
+            
+        return routines;
+    } catch (error) {
+        throw error;
     }
 };
 
@@ -74,6 +97,42 @@ exports.comment = function * (params, createdBy) {
         var comments = yield Routine.findById(params.routineId).select('comments'); //  the upper func returns comments without the new one
             
         return comments;
+    } catch (err) {
+        throw err;
+    }
+};
+
+exports.getLikes = function * (params) {
+    
+};
+
+exports.getTags = function * (params) {
+    
+};
+
+exports.like = function * (params) {
+    try {
+        var routine = Routine.findByIdAndUpdate(params.routine, {
+            $push: {
+                'likedBy': params.userId
+            }
+        });
+            
+        return routine;
+    } catch (err) {
+        throw err;
+    }
+};
+
+exports.unlike = function * (params) {
+    try {
+        var routine = Routine.findByIdAndUpdate(params.routine, {
+            $pull: {
+                'likedBy': params.userId
+            }
+        });
+        
+        return routine;
     } catch (err) {
         throw err;
     }
