@@ -50,10 +50,7 @@ exports.createRoutine = function * (params, createdBy) {
         var exercises = params.exercises;
 
         var routine = new Routine({
-            category: {
-                id: details.categoryId,
-                name: 'default'
-            },
+            categoryId: details.categoryId,
             name: details.name,
             description: details.description,
             difficulty: details.difficulty || 1,

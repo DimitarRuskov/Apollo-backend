@@ -5,10 +5,7 @@ var Schema = mongoose.Schema;
 var Category = require('mongoose').model('Category');
 
 var RoutineSchema = new Schema({
-    category: {
-        name: {type: String, required: true},
-        id: {type: String, required: true}
-    },
+    categoryId: {type: String, required: true},
     name: {type: String, required: true, unique: true},
     description: {type: String, required: true},
     difficulty: {type: Number, required: true},
@@ -17,8 +14,8 @@ var RoutineSchema = new Schema({
         username: {type: String, required: true},
         id: {type: String, required: true}
     },
-    likedBy: {type: Array, required: true, default: []},
-    tags: {type: Array, required: true, default: []},
+    likedBy: {type: Array, required: false, default: []},
+    tags: {type: Array, required: false, default: []},
     imageUrl: {type: String, required: false}
 });
 
@@ -36,7 +33,7 @@ var CommentSchema = new Schema({
 RoutineSchema.pre('save', function(done) {
     co.wrap(function * () {
         try {
-            var category = yield Category.findById(this.category.id);
+            var category = yield Category.findById(this.categoryId);
             if (!category || category === null) throw new Error('Invalid Category ID');
             done();
         } catch (err) {
