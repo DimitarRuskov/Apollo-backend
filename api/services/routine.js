@@ -46,21 +46,28 @@ exports.createRoutine = function * (params, createdBy) {
     try {
         var createdAt = new Date();
         var imageUrl = null;
+        var details = params.details;
+        var exercises = params.exercises;
+
         var routine = new Routine({
             category: {
-                id: params.categoryId,
+                id: details.categoryId,
                 name: 'default'
             },
-            name: params.name,
-            description: params.description,
-            difficulty: params.difficulty || 1,
+            name: details.name,
+            description: details.description,
+            difficulty: details.difficulty || 1,
             createdAt: createdAt,
             createdBy: createdBy
         });
         
         routine = yield routine.save();
-        imageUrl = yield Helpers.storeImage(params.image, routine.id);
+        imageUrl = yield Helpers.storeImage(details.image, routine.id);
         routine = yield Routine.findByIdAndUpdate(routine.id, {imageUrl: imageUrl}, {new: true});
+
+        if(exercises.length && exercises.length > 0) {
+            //add exercises
+        }
         
         return routine;
     } catch (err) {
