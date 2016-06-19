@@ -10,7 +10,8 @@ module.exports = function(services) {
     
     route.handler = function * list(next) {
         var params = {
-            routineId: this.params.routine
+            routineId: this.params.routine,
+            page: this.query.page
         };
         
         var commentsData = yield services.get('comment').listComments(params);

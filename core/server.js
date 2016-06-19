@@ -29,7 +29,7 @@ module.exports = (function() {
         models.load();
         middlewares.load(app);
         
-        app = module.exports = koa();
+        app = koa();
         
         app.use(middlewares.get('contentType'));
         app.use(middlewares.get('errorHandler'));
