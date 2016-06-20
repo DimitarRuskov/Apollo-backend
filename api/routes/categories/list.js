@@ -3,9 +3,14 @@ module.exports = function(services) {
 
     route.path = '';
     route.method = 'get';
-    
+    route.pagination = true;
+
     route.handler = function * list(next) {
-        var categories = yield services.get('category').listCategories(this.params);
+        var params = this.params;
+        params.page = this.query.page || 0;
+        params.itemsPerPage = route.itemsPerPage;
+
+        var categories = yield services.get('category').listCategories(params);
         
         this.status = 200;
         this.body = {

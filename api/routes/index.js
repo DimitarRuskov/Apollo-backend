@@ -56,6 +56,10 @@ module.exports = function() {
             routeObj.validate.type = 'application/json';
         }
 
+        if (routeObj.pagination && !routeObj.itemsPerPage) {
+            routeObj.itemsPerPage = 10;
+        }
+
         return routeObj;
     }
 

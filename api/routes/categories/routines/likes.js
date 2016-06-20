@@ -3,10 +3,11 @@ var Joi = require('koa-joi-router').Joi;
 module.exports = function(services) {
     var route = {};
 
-    route.path = '';
+    route.path = 'likes';
     route.method = 'get';
     route.pathParams = {
-        'categories': 'category'
+        'categories': 'category',
+        'routines': 'routine'
     };
     
     route.pagination = true;
@@ -16,15 +17,11 @@ module.exports = function(services) {
         params.itemsPerPage = route.itemsPerPage;
         params.page = this.query.page || 0;
         
-        if (this.query && this.query.name) {
-            params.name = this.query.name;
-        }
-        
-        var routines = yield services.get('routine').listRoutines(params);
+        var likes = yield services.get('routine').getLikes(params);
         
         this.status = 200;
         this.body = {
-            routines: routines
+            likes: likes
         };
     };
 

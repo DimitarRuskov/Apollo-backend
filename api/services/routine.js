@@ -2,13 +2,6 @@
 var Routine = require('mongoose').model('Routine');
 var Helpers = require('./../helpers/storeImage');
 
-// checks if routine matches the specified category
-function initialCheck(params) {
-    if (params.category !== params.routine.categoryId) {
-        throw new Error('Routine not found');
-    }
-}
-
 exports.listRoutines = function * (params) {
     try {
         var options = {
@@ -19,8 +12,14 @@ exports.listRoutines = function * (params) {
             options.name = new RegExp(params.name, 'i');
         }
         
-        var routines = yield Routine.find(options);
+        var routines = yield Routine.find(options)
+                                    .skip(params.page * params.itemsPerPage)
+                                    .limit(params.itemsPerPage);
         
+        for (var i = 0; i < routines.length; i++) {
+            routines[i].liked = routines[i].likes.indexOf(params.userId) > -1;
+        }
+
         return routines;
     } catch (err) {
         throw err;
@@ -34,9 +33,11 @@ exports.getRoutine = function * (params) {
             _id: params.routine
         };
         
-        var routines = yield Routine.find(options);
-            
-        return routines;
+        var routine = yield Routine.find(options);
+
+        routine.liked = routine.likes.indexOf(params.userId) > -1;
+
+        return routine;
     } catch (error) {
         throw error;
     }
@@ -60,12 +61,15 @@ exports.createRoutine = function * (params, createdBy) {
         
         routine = yield routine.save();
         imageUrl = yield Helpers.storeImage(details.image, routine.id);
-        routine = yield Routine.findByIdAndUpdate(routine.id, {imageUrl: imageUrl}, {new: true});
+        routine.imageUrl = imageUrl;
+        yield routine.save();
 
-        if(exercises.length && exercises.length > 0) {
+        if (exercises.length && exercises.length > 0) {
             //add exercises
         }
         
+        routine.liked = false;
+
         return routine;
     } catch (err) {
         throw err;
@@ -107,21 +111,47 @@ exports.comment = function * (params, createdBy) {
 };
 
 exports.getLikes = function * (params) {
-    
+    try {
+        var options = {
+            categoryId: params.category,
+            _id: params.routine
+        };
+        
+        var likes = yield Routine.find(options, {likes: {$slice: [params.page * params.itemsPerPage, params.itemsPerPage]}});
+
+        return likes;
+    } catch (error) {
+        throw error;
+    }
 };
 
 exports.getTags = function * (params) {
+    var options = {
+        categoryId: params.category,
+        _id: params.routine
+    };
     
+    var tags = yield Routine.find(options, {tags: {$slice: [params.page * params.itemsPerPage, params.itemsPerPage]}});
+
+    return tags;
 };
 
 exports.like = function * (params) {
     try {
-        var routine = Routine.findByIdAndUpdate(params.routine, {
-            $push: {
-                'likedBy': params.userId
-            }
-        });
-            
+        var routine = yield Routine.findById(params.routine);
+
+        if (!routine) {
+            throw new Error("Routine not found");
+        }
+
+        if (routine.likes.indexOf(params.userId) > -1) {
+            throw new Error("Error");
+        }
+
+        routine.likes.push(params.userId);
+
+        yield routine.save();
+
         return routine;
     } catch (err) {
         throw err;
@@ -130,12 +160,20 @@ exports.like = function * (params) {
 
 exports.unlike = function * (params) {
     try {
-        var routine = Routine.findByIdAndUpdate(params.routine, {
-            $pull: {
-                'likedBy': params.userId
-            }
-        });
-        
+        var routine = yield Routine.findById(params.routine);
+
+        if (!routine) {
+            throw new Error("Routine not found");
+        }
+
+        if (routine.likes.indexOf(params.userId) < 0) {
+            throw new Error("Error");
+        }
+
+        routine.likes.pull(params.userId);
+
+        yield routine.save();
+
         return routine;
     } catch (err) {
         throw err;

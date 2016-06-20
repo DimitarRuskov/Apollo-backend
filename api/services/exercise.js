@@ -3,7 +3,10 @@ var Exercise = require('mongoose').model('Exercise');
 
 exports.listExercises = function * (params) {
     try {
-        var exercise = yield Exercise.find({'routineId': params.routineId}).sort(params.orderBy || {});
+        var exercise = yield Exercise.find({'routineId': params.routineId})
+        .skip(params.page * params.itemsPerPage)
+        .limit(params.itemsPerPage);
+        
         return exercise;
     } catch (err) {
         throw err;

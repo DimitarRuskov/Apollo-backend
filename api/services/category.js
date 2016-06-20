@@ -4,7 +4,10 @@ var Helpers = require('./../helpers/storeImage');
 
 exports.listCategories = function * (params) {
     try {
-        var categories = yield Category.find().sort(params.orderBy || {});
+        var categories = yield Category.find()
+        .skip(params.page * params.itemsPerPage)
+        .limit(params.itemsPerPage);
+
         return categories;
     } catch (err) {
         throw err;
@@ -28,7 +31,8 @@ exports.createCategory = function * (params, user) {
         
         category = yield category.save();
         imageUrl = yield Helpers.storeImage(params.image, category.id);
-        category = yield Category.findByIdAndUpdate(category.id, {imageUrl: imageUrl}, {new: true});
+        category.imageUrl = imageUrl;
+        yield category.save();
         
         return category;
     } catch (err) {

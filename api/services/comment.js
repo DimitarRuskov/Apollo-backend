@@ -39,9 +39,8 @@ exports.listComments = function * (params) {
     try {
         var count = yield Comment.count({routineId: params.routineId});
         var comments = yield Comment.find({routineId: params.routineId})
-            .sort(params.orderBy || {createdAt: -1})
-            .skip((Number(params.page) - 1) * 10)
-            .limit(10);
+            .skip(params.page * params.itemsPerPage)
+            .limit(params.itemsPerPage);
         return {
             count: count,
             comments: comments

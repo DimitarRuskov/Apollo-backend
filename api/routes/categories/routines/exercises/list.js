@@ -8,8 +8,14 @@ module.exports = function(services) {
         'routines': 'routine'
     };
     
+    route.pagination = true;
+
     route.handler = function * list(next) {
-        yield services.get('exercise').listExercises(this.request.body.params);
+        var params = this.request.body.params;
+        params.page = this.query.page || 0;
+        params.itemsPerPage = route.itemsPerPage;
+
+        yield services.get('exercise').listExercises(params);
     };
     
     return route;

@@ -14,7 +14,7 @@ var RoutineSchema = new Schema({
         username: {type: String, required: true},
         id: {type: String, required: true}
     },
-    likedBy: {type: Array, required: false, default: []},
+    likes: {type: Array, required: false, default: []},
     tags: {type: Array, required: false, default: []},
     imageUrl: {type: String, required: false}
 });

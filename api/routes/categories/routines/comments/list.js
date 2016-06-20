@@ -8,10 +8,13 @@ module.exports = function(services) {
         'categories': 'category'
     };
     
+    route.pagination = true;
+
     route.handler = function * list(next) {
         var params = {
             routineId: this.params.routine,
-            page: this.query.page
+            page: this.query.page,
+            itemsPerPage: route.itemsPerPage
         };
         
         var commentsData = yield services.get('comment').listComments(params);
