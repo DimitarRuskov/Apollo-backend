@@ -1,5 +1,7 @@
 'use strict';
 var Routine = require('mongoose').model('Routine');
+var Comment = require('mongoose').model('Comment');
+var Exercise = require('mongoose').model('Exercise');
 var Helpers = require('./../helpers/storeImage');
 
 exports.listRoutines = function * (params) {
@@ -33,11 +35,21 @@ exports.getRoutine = function * (params) {
             _id: params.routine
         };
         
-        var routine = yield Routine.find(options);
+        var routine = yield Routine.findOne(options);
 
-        routine.liked = routine.likes.indexOf(params.userId) > -1;
+        var result = routine.toObject();
 
-        return routine;
+        result.liked = routine.likes.indexOf(params.userId) > -1;
+
+        result.comments = yield Comment.find({routineId: params.routine})
+                                        .limit(10);
+        result.exercises = yield Exercise.find({routineId: params.routine})
+                                          .limit(10);
+
+        result.commentsCount = yield Comment.count({routineId: params.routine});
+        result.exercisesCount = yield Exercise.count({routineId: params.routine});
+        
+        return result;
     } catch (error) {
         throw error;
     }
