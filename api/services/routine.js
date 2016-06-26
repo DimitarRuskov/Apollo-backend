@@ -1,7 +1,7 @@
 'use strict';
 var Routine = require('mongoose').model('Routine');
 var Comment = require('mongoose').model('Comment');
-var Exercise = require('mongoose').model('Exercise');
+var ExerciseService = require('./exercise');
 var Helpers = require('./../helpers/storeImage');
 
 exports.listRoutines = function * (params) {
@@ -14,9 +14,7 @@ exports.listRoutines = function * (params) {
             options.name = new RegExp(params.name, 'i');
         }
         
-        var routines = yield Routine.find(options)
-                                    .skip(params.page * params.itemsPerPage)
-                                    .limit(params.itemsPerPage);
+        var routines = yield Routine.find(options).skip(params.page * params.itemsPerPage).limit(params.itemsPerPage);
         
         for (var i = 0; i < routines.length; i++) {
             routines[i].liked = routines[i].likes.indexOf(params.userId) > -1;
@@ -41,10 +39,8 @@ exports.getRoutine = function * (params) {
 
         result.liked = routine.likes.indexOf(params.userId) > -1;
 
-        result.comments = yield Comment.find({routineId: params.routine})
-                                        .limit(10);
-        result.exercises = yield Exercise.find({routineId: params.routine})
-                                          .limit(10);
+        result.comments = yield Comment.find({routineId: params.routine}).limit(10);
+        result.exercises = yield Exercise.find({routineId: params.routine}).limit(10);
 
         result.commentsCount = yield Comment.count({routineId: params.routine});
         result.exercisesCount = yield Exercise.count({routineId: params.routine});
@@ -60,7 +56,8 @@ exports.createRoutine = function * (params, createdBy) {
         var createdAt = new Date();
         var imageUrl = null;
         var details = params.details;
-        var exercises = params.exercises;
+        var exercises = params.exercises || [];
+        var promises = [];
 
         var routine = new Routine({
             categoryId: details.categoryId,
@@ -76,10 +73,10 @@ exports.createRoutine = function * (params, createdBy) {
         routine.imageUrl = imageUrl;
         yield routine.save();
 
-        if (exercises.length && exercises.length > 0) {
-            //add exercises
-        }
-        
+        exercises.forEach(function(exercise, i) {
+            promises.push(ExerciseService.createExercise(exercise, i, routine.id))
+        });
+        exercises = yield promises;
         routine.liked = false;
 
         return routine;
@@ -114,7 +111,7 @@ exports.comment = function * (params, createdBy) {
                 }
             }}}, {new: true});
             
-        var comments = yield Routine.findById(params.routineId).select('comments'); //  the upper func returns comments without the new one
+        var comments = yield Routine.findById(params.routineId).select('comments');
             
         return comments;
     } catch (err) {

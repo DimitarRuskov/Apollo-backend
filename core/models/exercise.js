@@ -9,14 +9,9 @@ var ExerciseSchema = new Schema({
     repetitions: {type: Number, required: false},
     sets: {type: Number, required: false},
     duration: {type: Number, required: false},
-    break: {type: Number, required: true},
-    name: {type: String, required: true},
+    name: {type: String, required: false},
     description: {type: String, required: false},
-    imageUrl: {type: String, reuired: true},
-    createdBy: {
-        name: {type: String, required: true},
-        id: {type: String, required: true}
-    }
+    imageUrl: {type: String, reuired: false}
 });
 
 mongoose.model('Exercise', ExerciseSchema);
