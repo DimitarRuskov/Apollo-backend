@@ -10,14 +10,8 @@ module.exports = function() {
 
         routesPath.forEach(function(route) {
             var routeObj = require(route.requirePath)(services);
-            if (route.requirePath.indexOf('index') >= 0) {
-                loadIndexedRoute(routeObj, route).forEach(function(subRoute) {
-                    routes.push(subRoute);
-                });
-            } else {
-                route = prepareRoute(routeObj, route);
-                routes.push(route);
-            }
+            route = prepareRoute(routeObj, route);
+            routes.push(route);
         });
     }
 
@@ -61,16 +55,6 @@ module.exports = function() {
         }
 
         return routeObj;
-    }
-
-    function loadIndexedRoute(route, routeDef) {
-        var result = [];
-
-        route.subRoutes.forEach(function(route) {
-            result.push(prepareRoute(route, routeDef));
-        });
-
-        return result;
     }
 
     function getRoutes(basePath, baseRoutePath) {
