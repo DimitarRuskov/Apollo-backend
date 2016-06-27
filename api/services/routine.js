@@ -1,6 +1,7 @@
 'use strict';
 var Routine = require('mongoose').model('Routine');
 var Comment = require('mongoose').model('Comment');
+var Exercise = require('mongoose').model('Exercise');
 var ExerciseService = require('./exercise');
 var Helpers = require('./../helpers/storeImage');
 
@@ -150,11 +151,11 @@ exports.like = function * (params) {
         var routine = yield Routine.findById(params.routine);
 
         if (!routine) {
-            throw new Error("Routine not found");
+            throw new Error('Routine not found');
         }
 
         if (routine.likes.indexOf(params.userId) > -1) {
-            throw new Error("Error");
+            throw new Error('Error');
         }
 
         routine.likes.push(params.userId);
@@ -172,11 +173,11 @@ exports.unlike = function * (params) {
         var routine = yield Routine.findById(params.routine);
 
         if (!routine) {
-            throw new Error("Routine not found");
+            throw new Error('Routine not found');
         }
 
         if (routine.likes.indexOf(params.userId) < 0) {
-            throw new Error("Error");
+            throw new Error('Error');
         }
 
         routine.likes.pull(params.userId);
