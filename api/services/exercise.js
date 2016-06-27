@@ -18,9 +18,10 @@ exports.createExercise = function * (params, order, routineId) {
     try {
         var exerciseProps = {
             routineId: routineId,
-            order: order,
-        }
-        if(params.type === 'break') {
+            order: order
+        };
+
+        if (params.type === 'break') {
             exerciseProps.duration = params.time;
             exercise = new Exercise(exerciseProps);
             return yield exercise.save();
@@ -31,14 +32,11 @@ exports.createExercise = function * (params, order, routineId) {
             exerciseProps.repetitions = params.repetitions;
 
             var exercise = new Exercise(exerciseProps);
-            return exercise.save()
-            .then(function(exercise) {
-                return Helpers.storeImage(params.image, exercise.id);
-            })
-            .then(function(imageUrl) {
-                exercise.imageUrl = imageUrl.next().value;
-                return exercise.save();
-            }); 
+            yield exercise.save();
+            exercise.imageUrl = yield Helpers.storeImage(params.image, exercise.id);
+            yield exercise.save();
+
+            return exercise;
         }
     } catch (err) {
         throw err;

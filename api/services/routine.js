@@ -75,7 +75,7 @@ exports.createRoutine = function * (params, createdBy) {
         yield routine.save();
 
         exercises.forEach(function(exercise, i) {
-            promises.push(ExerciseService.createExercise(exercise, i, routine.id))
+            promises.push(ExerciseService.createExercise(exercise, i, routine.id));
         });
         exercises = yield promises;
         routine.liked = false;
